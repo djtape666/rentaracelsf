@@ -1,19 +1,12 @@
 <?php
 
-use app\models\Application;
-use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\widgets\ListView;
 
 /** @var yii\web\View $this */
-/** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var app\models\Application[] $applications */
 
-
-$this->title = 'Личный кабинет';
-
+$this->title = 'Мои заявки';
 ?>
-
 
 <div class="account-page">
 
@@ -30,46 +23,51 @@ $this->title = 'Личный кабинет';
         <div class="applications-grid">
 
             <?php foreach ($applications as $app): ?>
+                <?php
+                $car = $app->car;
+                
+                // характеристики автомобиля
+                $characteristics = [];
+                if ($car) {
+                    foreach ($car->carCharacteristics as $cc) {
+                        if ($cc->characteristic && $cc->characteristic->category) {
+                            $characteristics[$cc->characteristic->category->name] = $cc->characteristic->value;
+                        }
+                    }
+                }
+                $marka = $characteristics['Марка'] ?? '';
+                $fullName = trim($marka . ' ' . ($car->model ?? ''));
+                ?>
 
                 <div class="app-card">
 
                     <div class="app-header">
-                        <?= $app->car->marka->title ?> <?= $app->car->model ?>
+                        <?= $fullName ?: 'Автомобиль не указан' ?>
                     </div>
 
                     <div class="app-dates">
-                        <?= $app->start_date ?> — <?= $app->end_date ?>
+                        <?= Yii::$app->formatter->asDate($app->start_date, 'php:d.m.Y') ?> — 
+                        <?= Yii::$app->formatter->asDate($app->end_date, 'php:d.m.Y') ?>
                     </div>
 
                     <div class="app-status status-<?= $app->status->alias ?>">
                         <?= $app->status->title ?>
                     </div>
 
-                    <!-- ОЦЕНКА -->
                     <?php if ($app->status->alias == 'closed' && !$app->feedback): ?>
-
                         <div class="rating-buttons">
+                            <span>Оцените поездку:</span>
                             <?php for ($i = 1; $i <= 5; $i++): ?>
-                                <a href="<?= \yii\helpers\Url::to([
-                                    '/account/set-rating',
-                                    'id' => $app->id,
-                                    'rating' => $i
-                                ]) ?>">★</a>
+                                <a href="<?= Url::to(['/account/set-rating', 'id' => $app->id, 'rating' => $i]) ?>">★</a>
                             <?php endfor; ?>
                         </div>
-
                     <?php endif; ?>
 
-                    <!-- РЕЗУЛЬТАТ -->
                     <?php if ($app->feedback): ?>
-
                         <div class="rating-result">
-                            <?= str_repeat('★', $app->feedback->rating) ?>
+                            Ваша оценка: <?= str_repeat('★', $app->feedback->rating) ?>
                         </div>
-
                     <?php endif; ?>
-
-                    
 
                 </div>
 

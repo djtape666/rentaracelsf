@@ -20,11 +20,26 @@ $this->title = 'Заявки';
         <div class="applications-grid">
 
             <?php foreach ($applications as $app): ?>
+                <?php
+                
+                $car = $app->car;
+
+                $characteristics = [];
+                if ($car) {
+                    foreach ($car->carCharacteristics as $cc) {
+                        if ($cc->characteristic && $cc->characteristic->category) {
+                            $characteristics[$cc->characteristic->category->name] = $cc->characteristic->value;
+                        }
+                    }
+                }
+                $marka = $characteristics['Марка'] ?? '';
+                $fullName = trim($marka . ' ' . ($car->model ?? ''));
+                ?>
 
                 <div class="app-card">
 
                     <div class="app-header">
-                        <?= $app->car->marka->title ?> <?= $app->car->model ?>
+                        <?= $fullName ?: 'Автомобиль не указан' ?>
                     </div>
 
                     <div class="client-info">
@@ -32,7 +47,8 @@ $this->title = 'Заявки';
                     </div>
 
                     <div class="app-dates">
-                        <?= $app->start_date ?> — <?= $app->end_date ?>
+                        <?= Yii::$app->formatter->asDate($app->start_date, 'php:d.m.Y') ?> — 
+                        <?= Yii::$app->formatter->asDate($app->end_date, 'php:d.m.Y') ?>
                     </div>
 
                     <div class="app-status status-<?= $app->status->alias ?>">
@@ -41,14 +57,14 @@ $this->title = 'Заявки';
 
                     <div class="action-buttons">
                         <?php if ($app->status->alias == 'new' || $app->status->alias == 'pending'): ?>
-                            <a href="<?= Url::to(['admin/change-status', 'id' => $app->id, 'alias' => 'active']) ?>" class="btn-confirm">
-                                 Подтвердить
+                            <a href="<?= Url::to(['/admin/change-status', 'id' => $app->id, 'alias' => 'active']) ?>" class="btn-confirm">
+                                Подтвердить
                             </a>
                         <?php endif; ?>
 
                         <?php if ($app->status->alias != 'closed' && $app->status->alias != 'cancelled'): ?>
-                            <a href="<?= Url::to(['admin/change-status', 'id' => $app->id, 'alias' => 'closed']) ?>" class="btn-close">
-                                 Закрыть
+                            <a href="<?= Url::to(['/admin/change-status', 'id' => $app->id, 'alias' => 'closed']) ?>" class="btn-close">
+                                Закрыть
                             </a>
                         <?php endif; ?>
                     </div>
@@ -62,7 +78,6 @@ $this->title = 'Заявки';
     <?php endif; ?>
 
 </div>
-
 <style>
     body {
         background: #404040;

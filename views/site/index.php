@@ -54,7 +54,7 @@ use yii\helpers\Url;
                 <?php endif; ?>
 
                 <div class="info">
-                    <b><?= $car->fullName ?></b><br>
+                    
                     <?= $car->price ?> ₽ / день
                 </div>
 

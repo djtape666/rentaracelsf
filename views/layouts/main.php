@@ -46,18 +46,21 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             'items' => [
                 ['label' => 'Главная', 'url' => ['/site/index']],
                 ['label' => 'Каталог', 'url' => ['/car/index']],
-                ['label' => 'Условия', 'url' => ['/site/conditions']],
+                Yii::$app->user->isGuest || Yii::$app->user->identity->isClient
+                ? ['label' => 'Условия', 'url' => ['/site/conditions']]
+                : '',
+                Yii::$app->user->isGuest || Yii::$app->user->identity->isClient
+                ? ['label' => 'Контакты', 'url' => ['/site/about']]
+                    : '',
                 Yii::$app->user->isGuest
                     ?  ['label' => 'Регистрация', 'url' => ['/site/register']]
                     : '',
                 !Yii::$app->user->isGuest && Yii::$app->user->identity->isClient
                     ? ['label' => 'Личный кабинет', 'url' => ['/account']]
                     : '',
+                
                 !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
-                    ? ['label' => 'Заявки', 'url' => ['/admin/applications']]
-                    : '',
-                !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
-                    ? ['label' => 'Создать карточку', 'url' => ['/admin/create-car']]
+                    ? ['label' => 'Панель администратора', 'url' => ['/admin/create-car']]
                     : '',
                 Yii::$app->user->isGuest
                     ? ['label' => 'Войти', 'url' => ['/site/login']]

@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <p>
     <b>Автомобиль:</b>
-    <?= $model->car->marka->title ?> <?= $model->car->model ?>
-</p>
+     <?= $car->getCharacteristicValue('Марка') ?>
+    <?= $car->model ?>
 
 <p>
     <b>Даты аренды:</b>
@@ -40,7 +40,3 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $model->phone ?>
 </p>
 
-<p>
-    <b>Имя:</b>
-    <?= $model->fullname ?>
-</p>

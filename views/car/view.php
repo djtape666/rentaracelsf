@@ -1,20 +1,38 @@
 <?php
+
 /** @var $car app\models\Car */
 /** @var $application app\models\Application */
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
+
 $application = $application ?? new \app\models\Application();
 $car = $car ?? new app\models\Car;
-?>
 
+// Собираем все характеристики автомобиля
+$characteristics = [];
+foreach ($car->carCharacteristics as $cc) {
+    if ($cc->characteristic && $cc->characteristic->category) {
+        $characteristics[$cc->characteristic->category->name] = $cc->characteristic->value;
+    }
+}
+
+// Получаем все категории, которые есть в системе (для отображения отсутствующих)
+$allCategories = \app\models\Category::find()->all();
+
+
+// Получаем марку из характеристик
+$marka = $characteristics['Марка'] ?? '';
+
+// Формируем полное название: Марка + Модель
+$fullCarName = trim($marka . ' ' . $car->model);
+?>
 
 <div class="car-page">
 
     <h1 class="car-page-title">
-    <?= $car->marka->title ?> <?= $car->model ?>
-</h1>
-
+        <?= Html::encode($fullCarName) ?>
+    </h1>
 
     <div class="gallery-row">
 
@@ -36,27 +54,23 @@ $car = $car ?? new app\models\Car;
     <div class="car-info-block">
 
         <div class="car-title">
-            <?= $car->marka->title ?> <?= $car->model ?>
+            <?= Html::encode($fullCarName) ?>
         </div>
 
         <div class="price">
             <?= $car->price ?> ₽ / день
         </div>
 
-       
         <div class="specs-row">
 
-            <div class="spec-item">
-                <?= $car->marka->title ?>
-            </div>
+            <?php foreach ($allCategories as $category): ?>
+                <?php if (isset($characteristics[$category->name])): ?>
+                    <div class="spec-item">
+                        <?= $characteristics[$category->name] ?>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
 
-            <div class="spec-item">
-                <?= $car->transmissionType->title ?>
-            </div>
-
-            <div class="spec-item">
-                <?= $car->fuelType->title ?>
-            </div>
 
             <div class="spec-item">
                 <?= $car->engine_power ?> л.с.
@@ -73,11 +87,11 @@ $car = $car ?? new app\models\Car;
         </div>
 
     </div>
-   
-<?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 1): ?>
 
-    <a href="<?= \yii\helpers\Url::to(['/admin/update-car', 'id' => $car->id]) ?>"
-       style="
+    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 1): ?>
+
+        <a href="<?= \yii\helpers\Url::to(['/admin/update-car', 'id' => $car->id]) ?>"
+            style="
            display:inline-block;
            padding:8px 12px;
            background:#ff9800;
@@ -86,13 +100,13 @@ $car = $car ?? new app\models\Car;
            margin-bottom:15px;
            text-decoration:none;
        ">
-        Редактировать
-    </a>
+            Редактировать
+        </a>
 
-<?php endif; ?>
+    <?php endif; ?>
     <h2>
-        <div class=titlebro>
-БРОНИРОВАНИЕ
+        <div class="titlebro">
+            БРОНИРОВАНИЕ
         </div>
     </h2>
 
@@ -100,20 +114,18 @@ $car = $car ?? new app\models\Car;
 
         <div class="booking-box">
 
-           
-
             <?php $form = \yii\widgets\ActiveForm::begin(); ?>
 
-            <?= $form->field($application, 'fullname')->textInput() ?>
+
             <?= $form->field($application, 'phone')->textInput() ?>
 
             <?= $form->field($application, 'start_date')->input('date') ?>
             <?= $form->field($application, 'end_date')->input('date') ?>
 
-<?= $form->field($application, 'pay_type_id')->dropDownList(
-    \app\models\PayType::find()->select(['title', 'id'])->indexBy('id')->column(),
-    ['prompt' => 'Выберите тип оплаты']
-) ?>
+            <?= $form->field($application, 'pay_type_id')->dropDownList(
+                \app\models\PayType::find()->select(['title', 'id'])->indexBy('id')->column(),
+                ['prompt' => 'Выберите тип оплаты']
+            ) ?>
 
             <button class="btn-book">Забронировать</button>
 
@@ -123,11 +135,8 @@ $car = $car ?? new app\models\Car;
 
     </div>
     <style>
-
-
-body{
-background: #404040;
-color: white;
-}
-
-</style>
+        body {
+            background: #404040;
+            color: white;
+        }
+    </style>
