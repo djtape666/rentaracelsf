@@ -29,7 +29,7 @@ padding-top: 70px;
 
 /*распределение ссылок по ширине */
 .custom-navbar .navbar-nav .nav-item {
-  flex: 1;
+  flex: 10;
   text-align: center;
 }
 
@@ -247,64 +247,251 @@ body {
 
 /*каталог*/
 -----------------------------------------------------
- body {
+
+body {
   color: white;
   font-family: "myfont", sans-serif !important;
   font-weight: 300;
 }
-.title {
-  font-size: 26px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-.divtitle {
-  padding-top: 20px;
-  text-align: center;
-}
-.catalog {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+/* ===== ФИЛЬТРЫ ===== */
+
+.catalog-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 30px;
 }
 
+
+/* фильтр */
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+
+    padding: 25px;
+
+    background: #2f2f2f;
+    border-radius: 18px;
+
+    align-items: end;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* блок одного фильтра */
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 220px;
+}
+
+/* название категории */
+.filter-group label {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* select */
+.filter-group select {
+    background: #404040;
+    color: white;
+    border: 1px solid #5a5a5a;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* hover */
+.filter-group select:hover {
+    border-color: #ffd600;
+}
+
+/* focus */
+.filter-group select:focus {
+    border-color: #ffd600;
+    box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.15);
+}
+
+/* options */
+.filter-group option {
+    background: #2b2b2b;
+    color: white;
+}
+
+/* кнопка */
+.filter-btn {
+    background: #ffd600;
+    color: black;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    height: 52px;
+}
+
+/* hover кнопки */
+.filter-btn:hover {
+    transform: translateY(-2px);
+    background: #ffe44d;
+    box-shadow: 0 8px 18px rgba(255, 214, 0, 0.25);
+}
+
+/* мобильная версия */
+@media (max-width: 768px) {
+
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .filter-btn {
+        width: 100%;
+    }
+}
+.catalog {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(350px, 1fr));
+
+    gap: 30px;
+
+    width: 100%;
+}
+
+
 .car-card {
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  background: #fff;
-  transition: 0.3s;
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    border-radius: 18px;
+    cursor: pointer;
+    text-decoration: none;
+    background: #1f1f1f;
+    transition: 0.4s;
 }
 
 .car-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-6px);
 }
 
-.car-img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+.car-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    transition: 0.6s;
 }
 
-.car-body {
-  padding: 15px;
+.car-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.548),
+        rgba(0,0,0,0.2)
+    );
+    opacity: 0;
+    transition: 0.5s;
+    z-index: 1;
+}
+.car-card:hover::after {
+    opacity: 1;
+}
+
+.car-top {
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
+    z-index: 2;
+
+    color: white;
 }
 
 .car-title {
-  font-size: 18px;
-  font-weight: bold;
+    font-size: 28px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+.car-price {
+    font-size: 18px;
+
+    color: #ffd600;
+
+    font-weight: 500;
 }
 
-.car-price {
-  color: #2ecc71;
-  font-size: 16px;
-  margin-top: 5px;
+
+.car-bottom {
+    position: absolute;
+
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 14px;
+
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.4s;
 }
+.car-card:hover img {
+    transform: scale(1.08);
+}
+.car-card:hover .car-bottom {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+.divtitle {
+    text-align: center;
+
+    padding-top: 10px;
+}
+.title {
+    color: white;
+    font-size: 42px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
 
 /*карточка машины*/----------------------------------------
+
+
 body{
 background: #404040;
- color: white;
+color: white;
 }
     /*  ГАЛЕРЕЯ */
     .gallery-row {
@@ -405,6 +592,7 @@ body {
   color: white;
   padding: 10px 20px;
   text-align: center;
+  
 }
 
 /* Заголовок */
@@ -422,13 +610,15 @@ body {
   gap: 40px;
   margin-bottom: 60px;
   flex-wrap: wrap;
+  
 }
 
 .condition-card {
   background: #6b6b6b;
   border-radius: 15px;
-  padding: 30px;
-  width: 400px;
+  padding: 10px;
+  width: 600px;
+  
 }
 
 .condition-card h2 {
@@ -448,8 +638,8 @@ body {
 }
 
 .icon-block img {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   margin-bottom: 10px;
   filter: brightness(0) invert(1); 
 }
@@ -984,4 +1174,243 @@ color: white;
     padding: 30px;
     background: #2f2f2f;
     border-radius: 10px;
+}
+
+/* ===== ADMIN CREATE PAGE ===== */----------------------------------------------------------
+
+.admin-create-page {
+    min-height: 100vh;
+    background: #404040;
+    padding: 120px 40px;
+    color: white;
+}
+
+.admin-create-page h1 {
+    text-align: center;
+    margin-bottom: 60px;
+    font-size: 26px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.admin-buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.admin-card-btn {
+    width: 420px;
+    min-height: 220px;
+
+    background: #2f2f2f;
+
+    border-radius: 20px;
+
+    padding: 40px;
+
+    text-decoration: none;
+
+    transition: 0.3s;
+
+    border: 1px solid transparent;
+}
+
+.admin-card-btn:hover {
+    transform: translateY(-8px);
+
+    border: 1px solid #ffd600;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+.admin-btn-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffd600;
+    margin-bottom: 20px;
+}
+
+.admin-btn-text {
+    color: #d5d5d5;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+--панель администратора хараеткристики------------------------------------------------------------------
+ 
+body{
+  background-color: #404040;
+  color: white;
+}
+
+.spec-page {
+    min-height: 100vh;
+    background: #404040;
+    padding: 120px 40px;
+    color: white;
+}
+
+.spec-page h1 {
+    text-align: center;
+    margin-bottom: 60px;
+    font-size: 42px;
+    text-transform: uppercase;
+}
+
+.spec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 30px;
+}
+
+.spec-box {
+    background: #2f2f2f;
+    border-radius: 20px;
+    padding: 40px;
+}
+
+.spec-box h2 {
+    margin-bottom: 30px;
+    color: #ffd600;
+}
+
+.spec-box input,
+.spec-box select {
+    width: 100%;
+    background: #1f1f1f;
+    border: 1px solid #555;
+    color: white;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 20px;
+}
+
+.admin-btn {
+    width: 100%;
+    background: #ffd600;
+    color: black;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.admin-btn:hover {
+    background: #ffcc00;
+}
+
+    /* контакты*/--------------------------------------------------------------------
+
+.contacts-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.contacts-title {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* сетка */
+
+.contacts-wrapper {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 35px;
+}
+
+/* левая часть */
+
+.contacts-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* карточки */
+
+.contact-card {
+    background: #2f2f2f;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+.contact-label {
+    color: #ffd600;
+    font-size: 14px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contact-value {
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* соцсети */
+
+.socials {
+    display: flex;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+.socials a {
+    width: 58px;
+    height: 58px;
+    background: #2f2f2f;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.socials a:hover {
+    transform: translateY(-4px);
+    background: #3a3a3a;
+}
+
+.socials img {
+    width:38px;
+    height: 38px;
+    object-fit: contain;
+}
+
+/* карта */
+
+.map-block {
+    overflow: hidden;
+    border-radius: 22px;
+    min-height: 500px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+.map-block iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* адаптив */
+
+@media (max-width: 900px) {
+
+    .contacts-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .map-block {
+        min-height: 400px;
+    }
 }
