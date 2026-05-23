@@ -33,37 +33,89 @@ class AdminController extends Controller
             ]
         );
     }
-public function actionUpdateCar($id)
+    public function actionUpdateCar($id)
 {
     $model = \app\models\Car::findOne($id);
-
+    
     if (!$model) {
         throw new \yii\web\NotFoundHttpException();
     }
-
+    
+    // Получаем все категории для формы
+    $categories = \app\models\Category::find()->all();
+    
+    // Получаем выбранные характеристики для этого автомобиля
+    $selectedCharacteristics = [];
+    foreach ($model->carCharacteristics as $cc) {
+        if ($cc->characteristic && $cc->characteristic->category) {
+            $selectedCharacteristics[$cc->characteristic->category_id] = $cc->characteristic_id;
+        }
+    }
+    
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-        $images = UploadedFile::getInstancesByName('images');
-
+        
+        // ===== ОБНОВЛЕНИЕ ХАРАКТЕРИСТИК =====
+        // Удаляем старые характеристики
+        \app\models\CarCharacteristic::deleteAll(['car_id' => $model->id]);
+        
+        // Сохраняем новые характеристики
+        $characteristics = Yii::$app->request->post('characteristics');
+        if (!empty($characteristics) && is_array($characteristics)) {
+            foreach ($characteristics as $categoryId => $characteristicId) {
+                if (!empty($characteristicId)) {
+                    $carCharacteristic = new \app\models\CarCharacteristic();
+                    $carCharacteristic->car_id = $model->id;
+                    $carCharacteristic->characteristic_id = $characteristicId;
+                    $carCharacteristic->save();
+                }
+            }
+        }
+        
+        // ===== ЗАГРУЗКА НОВЫХ ИЗОБРАЖЕНИЙ =====
+        $images = \yii\web\UploadedFile::getInstancesByName('images');
         foreach ($images as $file) {
-
             $fileName = '/images/' . uniqid() . '.' . $file->extension;
             $file->saveAs(Yii::getAlias('@webroot') . $fileName);
-
+            
             $img = new \app\models\CarImage();
             $img->car_id = $model->id;
             $img->image_path = $fileName;
             $img->save();
         }
-
-       Yii::$app->session->setFlash('success', 'Информация об автомобиле обновлена');
-
-return $this->redirect(['/car/index']);
+        
+        Yii::$app->session->setFlash('success', 'Информация об автомобиле обновлена');
+        return $this->redirect(['/car/index']);
     }
-
+    
     return $this->render('update', [
         'model' => $model,
+        'categories' => $categories,
+        'selectedCharacteristics' => $selectedCharacteristics,
     ]);
+}
+public function actionDeleteImage($id)
+{
+    $image = \app\models\CarImage::findOne($id);
+    
+    if ($image) {
+        // Полный путь к файлу
+        $filePath = Yii::getAlias('@webroot') . $image->image_path;
+        
+        // Удаляем физический файл
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+        
+        // Удаляем запись из БД
+        $image->delete();
+        
+        Yii::$app->session->setFlash('success', 'Изображение удалено');
+    } else {
+        Yii::$app->session->setFlash('error', 'Изображение не найдено');
+    }
+    
+    // Возвращаемся на предыдущую страницу
+    return $this->redirect(Yii::$app->request->referrer);
 }
     /**
      * Lists all Application models.
@@ -167,15 +219,16 @@ return $this->redirect(['/car/index']);
     }
 
     public function actionAdmin()
-    {
-        $applications = \app\models\Application::find()
-            ->with(['car.marka', 'status'])
-            ->all();
+{
+    $applications = \app\models\Application::find()
+        ->with(['car', 'car.carCharacteristics.characteristic.category', 'status'])
+        ->orderBy(['id' => SORT_DESC])
+        ->all();
 
-        return $this->render('admin', [
-            'applications' => $applications,
-        ]);
-    }
+    return $this->render('admin', [
+        'applications' => $applications,
+    ]);
+}
 
     public function actionChangeStatus($id, $alias)
     {
@@ -191,45 +244,236 @@ return $this->redirect(['/car/index']);
         return $this->redirect(['admin/applications']);
     }
 
-    public function actionApplications()
-    {
-        $applications = \app\models\Application::find()
-            ->with(['car.marka', 'status'])
-            ->all();
+   public function actionApplications()
+{
+    // Получаем все заявки с подгрузкой связанных данных
+    $applications = \app\models\Application::find()
+        ->with(['car', 'car.carCharacteristics.characteristic.category', 'status'])
+        ->orderBy(['id' => SORT_DESC])
+        ->all();
+    
+    return $this->render('applications', [
+        'applications' => $applications,
+    ]);
+}
 
-        return $this->render('applications', [
-            'applications' => $applications,
-        ]);
-    }
-
-    public function actionCreateCar()
-    {
-        $model = new \app\models\Car();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-            $images = UploadedFile::getInstancesByName('images');
-
+    public function actionCreateCarForm()
+{
+    $model = new \app\models\Car();
+    $categories = \app\models\Category::find()
+        ->with('characteristics')
+        ->all();
+    
+    if ($model->load(Yii::$app->request->post())) {
+        
+        // Сохраняем автомобиль
+        if ($model->save()) {
+            
+            // ===== СОХРАНЕНИЕ ХАРАКТЕРИСТИК =====
+            $characteristics = Yii::$app->request->post('characteristics');
+            
+            if ($characteristics && is_array($characteristics)) {
+                foreach ($characteristics as $categoryId => $characteristicId) {
+                    if (!empty($characteristicId)) {
+                        $carCharacteristic = new \app\models\CarCharacteristic();
+                        $carCharacteristic->car_id = $model->id;
+                        $carCharacteristic->characteristic_id = $characteristicId;
+                        $carCharacteristic->save();
+                    }
+                }
+            }
+            
+            // ===== ЗАГРУЗКА ИЗОБРАЖЕНИЙ =====
+            $images = \yii\web\UploadedFile::getInstancesByName('images');
             foreach ($images as $file) {
-
                 $fileName = '/images/' . uniqid() . '.' . $file->extension;
                 $file->saveAs(Yii::getAlias('@webroot') . $fileName);
-
+                
                 $img = new \app\models\CarImage();
                 $img->car_id = $model->id;
                 $img->image_path = $fileName;
                 $img->save();
             }
+            
+            Yii::$app->session->setFlash('success', 'Автомобиль успешно создан');
+            return $this->redirect(['/car/index']);
+        }
+    }
+    
+    return $this->render('create-car-form', [
+        'model' => $model,
+        'categories' => $categories,
+    ]);
+}
 
-            return $this->redirect(['car/index']);
+
+
+    public function actionCreateCar()
+{
+    $model = new \app\models\Car();
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+    
+
+
+        $characteristics = Yii::$app->request->post('characteristics');
+
+        if ($characteristics) {
+
+            foreach ($characteristics as $categoryId => $characteristicId) {
+
+                if ($characteristicId) {
+
+                    $carCharacteristic = new \app\models\CarCharacteristic();
+
+                    $carCharacteristic->car_id = $model->id;
+
+                    $carCharacteristic->characteristic_id = $characteristicId;
+
+                    $carCharacteristic->save();
+                }
+            }
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+      
+
+        $images = UploadedFile::getInstancesByName('images');
+
+        foreach ($images as $file) {
+
+            $fileName = '/images/' . uniqid() . '.' . $file->extension;
+
+            $file->saveAs(
+                Yii::getAlias('@webroot') . $fileName
+            );
+
+            $img = new \app\models\CarImage();
+
+            $img->car_id = $model->id;
+
+            $img->image_path = $fileName;
+
+            $img->save();
+        }
+
+        Yii::$app->session->setFlash(
+            'success',
+            'Автомобиль успешно создан'
+        );
+
+        return $this->redirect(['/car/index']);
     }
+
+    return $this->render('create-car', [
+        'model' => $model,
+        'categories' => \app\models\Category::find()->all(),
+    ]);
+}
+    
+
+
+
+
+
+
+public function actionSpecifications()
+{
+    $category = new \app\models\Category();
+    $characteristic = new \app\models\Characteristic();
+
+    // создание категории
+    if ($category->load(Yii::$app->request->post())
+        && $category->save()) {
+
+        Yii::$app->session->setFlash(
+            'success',
+            'Категория создана'
+        );
+
+        return $this->refresh();
+    }
+
+    // создание характеристики
+    if ($characteristic->load(Yii::$app->request->post())
+        && $characteristic->save()) {
+
+        Yii::$app->session->setFlash(
+            'success',
+            'Характеристика добавлена'
+        );
+
+        return $this->refresh();
+    }
+
+    return $this->render('specifications', [
+        'category' => $category,
+        'characteristic' => $characteristic,
+        'categories' => \app\models\Category::find()->all(),
+        'characteristics' => \app\models\Characteristic::find()
+            ->with('category')
+            ->all(),
+    ]);
 }
 
 
 
 
+
+// Удаление автомобиля
+public function actionDeleteCar($id)
+{
+    $car = \app\models\Car::findOne($id);
+    
+    if (!$car) {
+        Yii::$app->session->setFlash('error', 'Автомобиль не найден');
+        return $this->redirect(['/car/index']);
+    }
+    
+    // Удаляем связанные изображения
+    foreach ($car->carImages as $image) {
+        $filePath = Yii::getAlias('@webroot') . $image->image_path;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+        $image->delete();
+    }
+    
+    // Удаляем связанные характеристики
+    \app\models\CarCharacteristic::deleteAll(['car_id' => $car->id]);
+    
+    // Удаляем автомобиль
+    $car->delete();
+    
+    Yii::$app->session->setFlash('success', 'Автомобиль удален');
+    return $this->redirect(['/car/index']);
+}
+
+// Скрыть автомобиль (сделать недоступным для бронирования)
+public function actionHideCar($id)
+{
+    $car = \app\models\Car::findOne($id);
+    
+    if ($car) {
+        $car->is_available = 0;
+        $car->save();
+        Yii::$app->session->setFlash('success', 'Автомобиль скрыт');
+    }
+    
+    return $this->redirect(['/car/index']);
+}
+
+// Показать автомобиль (сделать доступным для бронирования)
+public function actionShowCar($id)
+{
+    $car = \app\models\Car::findOne($id);
+    
+    if ($car) {
+        $car->is_available = 1;
+        $car->save();
+        Yii::$app->session->setFlash('success', 'Автомобиль снова доступен для бронирования');
+    }
+    
+    return $this->redirect(['/car/index']);
+}
+}

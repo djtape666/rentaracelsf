@@ -3,15 +3,12 @@
 namespace app\models;
 
 use Yii;
-use app\models\CarImage;
+
 /**
  * This is the model class for table "car".
  *
  * @property int $id
  * @property string $color
- * @property int $transmission_type_id
- * @property int $fuel_type_id
- * @property int $marka_id
  * @property int $price
  * @property int $engine_power
  * @property string $description
@@ -20,10 +17,8 @@ use app\models\CarImage;
  * @property int|null $is_available
  *
  * @property Application[] $applications
+ * @property CarCharacteristic[] $carCharacteristics
  * @property CarImage[] $carImages
- * @property FuelType $fuelType
- * @property Marka $marka
- * @property TransmissionType $transmissionType
  */
 class Car extends \yii\db\ActiveRecord
 {
@@ -45,13 +40,10 @@ class Car extends \yii\db\ActiveRecord
         return [
             [['year'], 'default', 'value' => null],
             [['is_available'], 'default', 'value' => 1],
-            [['color', 'transmission_type_id', 'fuel_type_id', 'marka_id', 'price', 'engine_power', 'description', 'model'], 'required'],
-            [['transmission_type_id', 'fuel_type_id', 'marka_id', 'price', 'engine_power', 'year', 'is_available'], 'integer'],
+            [['color', 'price', 'engine_power', 'description', 'model'], 'required'],
+            [['price', 'engine_power', 'year', 'is_available'], 'integer'],
             [['description'], 'string'],
             [['color', 'model'], 'string', 'max' => 255],
-            [['fuel_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => FuelType::class, 'targetAttribute' => ['fuel_type_id' => 'id']],
-            [['marka_id'], 'exist', 'skipOnError' => true, 'targetClass' => Marka::class, 'targetAttribute' => ['marka_id' => 'id']],
-            [['transmission_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => TransmissionType::class, 'targetAttribute' => ['transmission_type_id' => 'id']],
         ];
     }
 
@@ -63,14 +55,11 @@ class Car extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'color' => 'Цвет',
-            'transmission_type_id' => 'Коробка переключения передач',
-            'fuel_type_id' => 'Вид топлива',
-            'marka_id' => 'Марка',
             'price' => 'Цена за сутки',
-            'engine_power' => 'Мощность',
+            'engine_power' => 'Мощность(л/с)',
             'description' => 'Описание',
             'model' => 'Модель',
-            'year' => 'Год выпуска',
+            'year' => 'Год',
             'is_available' => 'Is Available',
         ];
     }
@@ -83,6 +72,16 @@ class Car extends \yii\db\ActiveRecord
     public function getApplications()
     {
         return $this->hasMany(Application::class, ['car_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[CarCharacteristics]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCarCharacteristics()
+    {
+        return $this->hasMany(CarCharacteristic::class, ['car_id' => 'id']);
     }
 
     /**
@@ -99,41 +98,53 @@ class Car extends \yii\db\ActiveRecord
     return $this->carImages[0] ?? null;
 }
 
-    /**
-     * Gets query for [[FuelType]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFuelType()
-    {
-        return $this->hasOne(FuelType::class, ['id' => 'fuel_type_id']);
-    }
-
-    /**
-     * Gets query for [[Marka]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMarka()
-    {
-        return $this->hasOne(Marka::class, ['id' => 'marka_id']);
-    }
-
-    /**
-     * Gets query for [[TransmissionType]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTransmissionType()
-    {
-        return $this->hasOne(TransmissionType::class, ['id' => 'transmission_type_id']);
-    }
 public function getImages()
 {
     return $this->hasMany(CarImage::class, ['car_id' => 'id']);
 }
-public function getFullName()
+
+public function getCharacteristic($categoryName)
+    {
+        // Находим категорию по названию
+        $category = Category::find()->where(['name' => $categoryName])->one();
+        
+        if (!$category) {
+            return null;
+        }
+        
+        // Находим характеристику автомобиля для этой категории
+        $carCharacteristic = CarCharacteristic::find()
+            ->joinWith('characteristic')
+            ->where([
+                'car_characteristic.car_id' => $this->id,
+                'characteristic.category_id' => $category->id
+            ])
+            ->one();
+        
+        if ($carCharacteristic && $carCharacteristic->characteristic) {
+            return $carCharacteristic->characteristic->value;
+        }
+        
+        return null;
+    }
+    
+   public function getCharacteristicsArray()
 {
-    return $this->marka->title . ' ' . $this->model;
+    $result = [];
+    foreach ($this->carCharacteristics as $carCharacteristic) {
+        if ($carCharacteristic->characteristic && $carCharacteristic->characteristic->category) {
+            $categoryName = $carCharacteristic->characteristic->category->name;
+            $result[$categoryName] = $carCharacteristic->characteristic->value;
+        }
+    }
+    return $result;
+}
+public function getCharacteristicValue($categoryName)
+{
+    $characteristics = $this->getCharacteristicsArray();
+    return $characteristics[$categoryName] ?? null;
 }
 }
+
+
+

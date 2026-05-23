@@ -10,7 +10,6 @@ use Yii;
  * @property int $id
  * @property string $created_at
  * @property int $car_id
- * @property string $fullname
  * @property int $pay_type_id
  * @property string $phone
  * @property string $end_date
@@ -42,16 +41,21 @@ class Application extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'car_id', 'fullname', 'pay_type_id', 'phone', 'end_date', 'start_date', 'status_id', 'user_id'], 'required'],
+            [['created_at', 'car_id', 'pay_type_id', 'phone', 'end_date', 'start_date', 'status_id', 'user_id'], 'required'],
             [['created_at', 'end_date', 'start_date'], 'safe'],
             [['car_id', 'pay_type_id', 'status_id', 'user_id'], 'integer'],
-            [['rating'], 'integer'],
-            [['fullname'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 16],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Car::class, 'targetAttribute' => ['car_id' => 'id']],
             [['pay_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PayType::class, 'targetAttribute' => ['pay_type_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [
+    ['start_date'],
+    'compare',
+    'compareValue' => date('Y-m-d'),
+    'operator' => '>=',
+    'message' => 'Дата начала аренды не может быть меньше текущей даты'
+],
         ];
     }
 
@@ -64,13 +68,12 @@ class Application extends \yii\db\ActiveRecord
             'id' => 'ID',
             'created_at' => 'Created At',
             'car_id' => 'Car ID',
-            'fullname' => 'ФИО',
             'pay_type_id' => 'Тип оплаты',
             'phone' => 'Телефон',
-            'end_date' => 'Дата конца',
-            'start_date' => 'Дата начала',
+            'end_date' => 'Дата окончания аренды',
+            'start_date' => 'Дата начала аренды',
             'status_id' => 'Статус',
-            'user_id' => 'Пользователь',
+            'user_id' => 'User ID',
         ];
     }
 
@@ -123,4 +126,5 @@ class Application extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+
 }

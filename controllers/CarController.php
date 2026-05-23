@@ -10,14 +10,37 @@ use Yii;
 
 class CarController extends Controller
 {
-    public function actionIndex()
-    {
-        $cars = Car::find()->all();
+   public function actionIndex()
+{
+    $query = Car::find();
 
-        return $this->render('index', [
-            'cars' => $cars,
+    $filters = Yii::$app->request->get('filters');
+
+    if ($filters) {
+
+        foreach ($filters as $categoryId => $characteristicId) {
+
+    if ($characteristicId) {
+
+        $query->andWhere([
+            'id' => \app\models\CarCharacteristic::find()
+                ->select('car_id')
+                ->where([
+                    'characteristic_id' =>
+                        $characteristicId
+                ])
         ]);
     }
+}
+    }
+
+    $cars = $query->all();
+
+    return $this->render('index', [
+        'cars' => $cars,
+        'categories' => \app\models\Category::find()->all(),
+    ]);
+}
 public function actionView($id)
 {
 
