@@ -1,0 +1,987 @@
+/*хедер*/
+----------------------------------------------------------- 
+body{
+padding-top: 70px;
+}
+
+.custom-navbar {
+  background: #404040;
+  padding: 0;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  z-index: 9999;
+}
+
+.custom-navbar .navbar-collapse {
+  flex-grow: 1;
+}
+
+.custom-navbar .navbar-nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/*распределение ссылок по ширине */
+.custom-navbar .navbar-nav .nav-item {
+  flex: 1;
+  text-align: center;
+}
+
+/* стиль ссылок */
+.custom-navbar .navbar-nav .nav-link {
+  color: white !important;
+  font-size: 19px;
+  font-weight: 500;
+  padding: 15px 10px !important;
+  transition: all 0.3s ease;
+  position: relative;
+  display: block;
+
+  font-weight: bold;
+}
+
+/* при наведении */
+.custom-navbar .navbar-nav .nav-link:hover {
+  color: #ffd600 !important;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Активная ссылка */
+.custom-navbar .navbar-nav .nav-link.active {
+  color: #ffd600 !important;
+  background: rgba(255, 0, 0, 0.1);
+}
+
+/* подчеркивание при наведении  */
+.custom-navbar .navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #ffd600;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.custom-navbar .navbar-nav .nav-link:hover::after {
+  width: 80%;
+}
+
+/*  для кнопки выхода */
+.custom-navbar .logout-btn {
+  color: white !important;
+  background: transparent;
+  border: none;
+  padding: 15px 10px !important;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.custom-navbar .logout-btn:hover {
+  color: #ff0000 !important;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .custom-navbar .navbar-nav .nav-item {
+    flex: auto;
+    text-align: left;
+  }
+
+  .custom-navbar .navbar-nav .nav-link {
+    padding: 12px 20px !important;
+  }
+
+  .custom-navbar .navbar-nav .nav-link::after {
+    display: none;
+  }
+}
+
+/* Бренд/логотип слева */
+.custom-navbar .navbar-brand {
+  color: white !important;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 30px;
+}
+
+.custom-navbar .navbar-brand:hover {
+  color: #ff0000 !important;
+}
+
+/*ФУТЕР*/---------------------------------------
+
+.site-footer {
+  background: #404040;
+  color: white;
+  margin-top: 50px;
+}
+
+/* красная линия как акцент */
+.footer-line {
+  height: 4px;
+  background: red;
+}
+
+/* контент */
+.footer-content {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+/* ссылка */
+.footer-content a {
+  color: #ffd600;
+  text-decoration: none;
+}
+
+.footer-content a:hover {
+  text-decoration: underline;
+}
+
+/*главная*/
+-------------------------------------------------------------------- 
+body {
+  background: #404040;
+  color: white;
+  font-family: "myfont", sans-serif !important;
+  font-weight: 300;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 80px;
+}
+
+.hero-text {
+  max-width: 500px;
+}
+
+.hero-title {
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1.3;
+  margin-bottom: 30px;
+  border-left: 4px solid red;
+  padding-left: 15px;
+}
+
+.btn-main {
+  background: #ffd600;
+  color: black;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+.btn-main:hover {
+  background: black;
+  color: #ffd600;
+}
+
+.hero img {
+  width: 500px;
+  border-radius: 12px;
+}
+
+/* онас */
+.about {
+  padding: 80px;
+}
+
+.about-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid red;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.about-text {
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* машинки*/
+.cars-preview {
+  padding: 80px;
+}
+
+.cars-grid {
+  display: flex;
+  gap: 20px;
+}
+
+.car-card-home {
+  width: 300px;
+  background: #2f2f2f;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.car-card-home img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.car-card-home .info {
+  padding: 15px;
+}
+
+/*каталог*/
+-----------------------------------------------------
+ body {
+  color: white;
+  font-family: "myfont", sans-serif !important;
+  font-weight: 300;
+}
+.title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.divtitle {
+  padding-top: 20px;
+  text-align: center;
+}
+.catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.car-card {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  transition: 0.3s;
+}
+
+.car-card:hover {
+  transform: translateY(-5px);
+}
+
+.car-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.car-body {
+  padding: 15px;
+}
+
+.car-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.car-price {
+  color: #2ecc71;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+/*карточка машины*/----------------------------------------
+body{
+background: #404040;
+ color: white;
+}
+    /*  ГАЛЕРЕЯ */
+    .gallery-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .gallery-row img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /*  БЛОК ИНФОРМАЦИИ */
+    .car-info-block {
+        margin-top: 30px;
+    }
+    .car-page-title {
+    text-align: center;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+    .car-title {
+        font-size: 28px;
+        font-weight: bold;
+
+    }
+.titlebro{
+text-align: center;
+font-size: 28px;
+    font-weight: bold;}
+    .price {
+        font-size: 22px;
+        color: #b7cc2e;
+        margin: 10px 0;
+    }
+
+    /*  ХАРАКТЕРИСТИКИ */
+    .specs-row {
+        display: flex;
+        gap: 25px;
+        margin: 15px 0;
+        flex-wrap: wrap;
+    }
+
+    .spec-item {
+        background: #f5f5f5;
+        color:  black;
+        padding: 8px 12px;
+        border-radius: 10px;
+    }
+
+    /*  ОПИСАНИЕ */
+    .description {
+        margin-top: 10px;
+        color: white;
+    }
+
+    /*  ФОРМА */
+    .booking-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .booking-box {
+        width: 400px;
+        padding: 20px;
+        background: #fff;
+        color: black;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-book {
+        width: 100%;
+        padding: 12px;
+        background: black;
+        color: white;
+        border-radius: 10px;
+        border: none;
+        margin-top: 10px;
+    }
+
+/*условия*/
+------------------------------------------------------------- 
+body {
+  background: #404040;
+}
+.conditions-page {
+  background: #404040;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+/* Заголовок */
+.title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+}
+
+/* Карточки */
+.cards-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.condition-card {
+  background: #6b6b6b;
+  border-radius: 15px;
+  padding: 30px;
+  width: 400px;
+}
+
+.condition-card h2 {
+  margin-bottom: 30px;
+  font-size: 20px;
+}
+
+/* Иконки */
+.icons {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.icon-block {
+  text-align: center;
+}
+
+.icon-block img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+  filter: brightness(0) invert(1); 
+}
+
+.icon-block p {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Нижний блок */
+.subtitle {
+  font-size: 22px;
+  margin-bottom: 40px;
+}
+
+.conditions-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.check-item {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  position: relative;
+  padding-left: 30px;
+}
+
+/* Зеленая галочка */
+.check-item::before {
+  content: "✔";
+  color: #4caf50;
+  position: absolute;
+  left: 0;
+  font-size: 20px;
+}
+
+/*заявки админ*/
+-------------------------------------------------- 
+body {
+  background: #404040;
+  color: white;
+}
+.account-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.account-title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 28px;
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+}
+
+/* Сетка для карточек */
+.applications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+}
+
+/* Карточка заявки */
+.app-card {
+  background: #2f2f2f;
+  padding: 20px;
+  border-radius: 12px;
+  transition: 0.3s ease;
+}
+
+.app-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Заголовок (автомобиль) */
+.app-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffd600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #404040;
+}
+
+/* Информация о клиенте */
+.client-info {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #ddd;
+}
+
+.client-info b {
+  color: #ffd600;
+}
+
+/* Даты */
+.app-dates {
+  font-size: 14px;
+  background: #3a3a3a;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* Статус */
+.app-status {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Цвета статусов */
+.status-new {
+  background: #687300;
+  color: white;
+}
+
+.status-now,
+.status-active {
+  background: #2196f3;
+  color: white;
+}
+
+.status-closed {
+  background: #4caf50;
+  color: white;
+}
+
+.status-cancelled {
+  background: #f44336;
+  color: white;
+}
+
+.status-pending {
+  background: #ff9800;
+  color: white;
+}
+
+/* Блок с кнопками */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Кнопка подтверждения */
+.btn-confirm {
+  flex: 1;
+  display: inline-block;
+  padding: 8px 12px;
+  background: #ffd600;
+  color: black;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.btn-confirm:hover {
+  background: #ffed4a;
+  transform: translateY(-2px);
+  color: black;
+}
+
+/* Кнопка закрытия */
+.btn-close {
+  flex: 1;
+  display: inline-block;
+  padding: 8px 12px;
+  background: #555;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.btn-close:hover {
+  background: #f44336;
+  transform: translateY(-2px);
+  color: white;
+}
+
+/* Пустое состояние */
+.empty-box {
+  text-align: center;
+  padding: 50px;
+  background: #2f2f2f;
+  border-radius: 12px;
+  font-size: 18px;
+  color: #aaa;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .account-page {
+    padding: 10px;
+  }
+
+  .applications-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .app-card {
+    padding: 15px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+/*регистрация*/-------------------------------------------------------------------- 
+body {
+  background: #404040;
+}
+
+.site-register {
+  min-height: 100vh;
+  background: #404040;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.register-box {
+  width: 100%;
+  max-width: 500px;
+  background: #2f2f2f;
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.register-title {
+  text-align: center;
+  color: white;
+  font-size: 34px;
+  margin-bottom: 35px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* labels */
+.site-register label {
+  color: white;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+/* input */
+.site-register .form-control {
+  height: 52px;
+  border-radius: 10px;
+  border: none;
+  background: #4b4b4b;
+  color: white;
+  padding: 0 15px;
+  margin-bottom: 15px;
+  transition: 0.3s;
+  box-shadow: none;
+}
+
+.site-register .form-control:focus {
+  background: #555;
+  border: 1px solid #ffd600;
+  color: white;
+  box-shadow: 0 0 10px rgba(255, 214, 0, 0.3);
+}
+
+/* button */
+.register-btn {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 10px;
+  background: #ffd600;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+.register-btn:hover {
+  background: #ffe44d;
+  transform: translateY(-2px);
+}
+
+/* errors */
+.invalid-feedback,
+.help-block {
+  color: #ff6b6b;
+}
+
+/* placeholder */
+.site-register .form-control::placeholder {
+  color: #cfcfcf;
+}
+
+/*авторизация*/--------------------------------------
+ body{
+ background: #404040;
+}
+
+.site-login {
+    min-height: 100vh;
+    background: #404040;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 450px;
+    background: #2f2f2f;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+}
+
+.login-title {
+    text-align: center;
+    color: white;
+    font-size: 32px;
+    margin-bottom: 35px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* labels */
+.site-login label {
+    color: white;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+/* input */
+.site-login .form-control {
+    height: 52px;
+    border-radius: 10px;
+    border: none;
+    background: #4b4b4b;
+    color: white;
+    padding: 0 15px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+    box-shadow: none;
+}
+
+.site-login .form-control:focus {
+    background: #555;
+    border: 1px solid #ffd600;
+    color: white;
+    box-shadow: 0 0 10px rgba(255,214,0,0.3);
+}
+
+/* placeholder */
+.site-login .form-control::placeholder {
+    color: #cfcfcf;
+}
+
+/* button */
+.login-btn {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 10px;
+    background: #ffd600;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.login-btn:hover {
+    background: #ffe44d;
+    transform: translateY(-2px);
+}
+
+/* errors */
+.invalid-feedback,
+.help-block {
+    color: #ff6b6b;
+}
+
+/*заявки пользователь*/---------------------------------------
+ body{
+background: #404040;
+color: white;
+}
+
+    
+        .rating-buttons a {
+    color: #777;
+    font-size: 22px;
+    text-decoration: none;
+    margin-right: 3px;
+    transition: 0.2s;
+}
+
+.rating-buttons a:hover {
+    color: #ffd600;
+}
+
+.rating-result {
+    color: #ffd600;
+    margin-top: 5px;
+}
+.account-page {
+    padding: 10px;
+    color: white;
+}
+
+.account-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* сетка */
+.applications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* карточка */
+.app-card {
+    background: #2f2f2f;
+    padding: 20px;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.app-card:hover {
+    transform: translateY(-5px);
+}
+
+/* заголовок */
+.app-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* даты */
+.app-dates {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 10px;
+}
+
+/* статус */
+.app-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* цвета статусов */
+.status-new {
+    background: #687300;
+}
+
+.status-now {
+    background: #21c9f3;
+}
+
+.status-closed {
+    background: #4caf50;
+}
+
+/* рейтинг */
+.rating-result {
+    color: #ffd600;
+    margin-bottom: 10px;
+}
+
+/* кнопки рейтинга */
+.rating-buttons a {
+    color: #777;
+    font-size: 20px;
+    text-decoration: none;
+    margin-right: 5px;
+    transition: 0.2s;
+}
+
+.rating-buttons a:hover {
+    color: #ffd600;
+}
+
+/* кнопка */
+.btn-details {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #ffd600;
+    color: black;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-details:hover {
+    opacity: 0.9;
+}
+
+/* пусто */
+.empty-box {
+    text-align: center;
+    padding: 30px;
+    background: #2f2f2f;
+    border-radius: 10px;
+}
