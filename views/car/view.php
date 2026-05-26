@@ -51,59 +51,90 @@ $fullCarName = trim($marka . ' ' . $car->model);
 
     </div>
 
-    <div class="car-info-block">
+<div class="car-info-card">
 
-        <div class="car-title">
-            <?= Html::encode($fullCarName) ?>
+    <div class="car-header">
+
+        <div>
+
+            <div class="car-title">
+                <?= Html::encode($fullCarName) ?>
+            </div>
+
+            <div class="car-price">
+                <?= $car->price ?> ₽ / день
+            </div>
+
         </div>
 
-        <div class="price">
-            <?= $car->price ?> ₽ / день
-        </div>
+        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 1): ?>
 
-        <div class="specs-row">
+            <a href="<?= \yii\helpers\Url::to(['/admin/update-car', 'id' => $car->id]) ?>"
+               class="edit-btn">
 
-            <?php foreach ($allCategories as $category): ?>
-                <?php if (isset($characteristics[$category->name])): ?>
-                    <div class="spec-item">
+                Редактировать
+
+            </a>
+
+        <?php endif; ?>
+
+    </div>
+
+    <div class="specs-grid">
+
+        <?php foreach ($allCategories as $category): ?>
+
+            <?php if (isset($characteristics[$category->name])): ?>
+
+                <div class="spec-card">
+
+                    <div class="spec-label">
+                        <?= $category->name ?>
+                    </div>
+
+                    <div class="spec-value">
                         <?= $characteristics[$category->name] ?>
                     </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
 
+                </div>
 
-            <div class="spec-item">
+            <?php endif; ?>
+
+        <?php endforeach; ?>
+
+        <div class="spec-card">
+
+            <div class="spec-label">
+                Мощность
+            </div>
+
+            <div class="spec-value">
                 <?= $car->engine_power ?> л.с.
             </div>
 
-            <div class="spec-item">
+        </div>
+
+        <div class="spec-card">
+
+            <div class="spec-label">
+                Цвет
+            </div>
+
+            <div class="spec-value">
                 <?= $car->color ?>
             </div>
 
         </div>
 
-        <div class="description">
-            <?= $car->description ?>
-        </div>
+    </div>
+
+    <div class="description-box">
+
+        <?= $car->description ?>
 
     </div>
 
-    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == 1): ?>
-
-        <a href="<?= \yii\helpers\Url::to(['/admin/update-car', 'id' => $car->id]) ?>"
-            style="
-           display:inline-block;
-           padding:8px 12px;
-           background:#ff9800;
-           color:white;
-           border-radius:8px;
-           margin-bottom:15px;
-           text-decoration:none;
-       ">
-            Редактировать
-        </a>
-
-    <?php endif; ?>
+</div>
     <h2>
         <div class="titlebro">
             БРОНИРОВАНИЕ
@@ -113,7 +144,14 @@ $fullCarName = trim($marka . ' ' . $car->model);
     <div class="booking-wrapper">
 
         <div class="booking-box">
-
+<?php if (Yii::$app->user->isGuest): ?>
+    <div class="guest-warning">
+         Для бронирования автомобиля необходимо 
+        <a href="<?= \yii\helpers\Url::to(['/site/login']) ?>">авторизоваться</a> 
+        или 
+        <a href="<?= \yii\helpers\Url::to(['/site/register']) ?>" ">зарегистрироваться</a>.
+    </div>
+<?php else: ?>
             <?php $form = \yii\widgets\ActiveForm::begin(); ?>
 
 
@@ -130,7 +168,7 @@ $fullCarName = trim($marka . ' ' . $car->model);
             <button class="btn-book">Забронировать</button>
 
             <?php \yii\widgets\ActiveForm::end(); ?>
-
+<?php endif; ?>
         </div>
 
     </div>
@@ -139,4 +177,5 @@ $fullCarName = trim($marka . ' ' . $car->model);
             background: #404040;
             color: white;
         }
+       
     </style>

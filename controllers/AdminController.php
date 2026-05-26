@@ -33,7 +33,7 @@ class AdminController extends Controller
             ]
         );
     }
-    public function actionUpdateCar($id)
+public function actionUpdateCar($id)
 {
     $model = \app\models\Car::findOne($id);
     
@@ -55,10 +55,8 @@ class AdminController extends Controller
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
         
         // ===== ОБНОВЛЕНИЕ ХАРАКТЕРИСТИК =====
-        // Удаляем старые характеристики
         \app\models\CarCharacteristic::deleteAll(['car_id' => $model->id]);
         
-        // Сохраняем новые характеристики
         $characteristics = Yii::$app->request->post('characteristics');
         if (!empty($characteristics) && is_array($characteristics)) {
             foreach ($characteristics as $categoryId => $characteristicId) {
@@ -72,15 +70,26 @@ class AdminController extends Controller
         }
         
         // ===== ЗАГРУЗКА НОВЫХ ИЗОБРАЖЕНИЙ =====
+        // ПРАВИЛЬНЫЙ способ получить все загруженные файлы
         $images = \yii\web\UploadedFile::getInstancesByName('images');
-        foreach ($images as $file) {
-            $fileName = '/images/' . uniqid() . '.' . $file->extension;
-            $file->saveAs(Yii::getAlias('@webroot') . $fileName);
-            
-            $img = new \app\models\CarImage();
-            $img->car_id = $model->id;
-            $img->image_path = $fileName;
-            $img->save();
+        
+        if (!empty($images)) {
+            foreach ($images as $file) {
+                // Проверяем, что файл успешно загружен
+                if ($file && !$file->hasError) {
+                    $fileName = '/images/' . uniqid() . '.' . $file->extension;
+                    $filePath = Yii::getAlias('@webroot') . $fileName;
+                    
+                    if ($file->saveAs($filePath)) {
+                        $img = new \app\models\CarImage();
+                        $img->car_id = $model->id;
+                        $img->image_path = $fileName;
+                        $img->save();
+                    } else {
+                        Yii::error('Ошибка сохранения файла: ' . $file->name);
+                    }
+                }
+            }
         }
         
         Yii::$app->session->setFlash('success', 'Информация об автомобиле обновлена');

@@ -1,14 +1,22 @@
 <?php
 
 use yii\helpers\Url;
+$marka = $characteristics['Марка'] ?? '';
 
-$this->title = 'Заявки';
 ?>
 
+
 <div class="account-page">
+   <div class="spec-header">
 
+    <a href="<?= \yii\helpers\Url::to(['/admin/create-car']) ?>"
+       class="back-btn">
+
+        Назад
+
+    </a>
     <h1 class="account-title">ЗАЯВКИ КЛИЕНТОВ</h1>
-
+   </div>
     <?php if (empty($applications)): ?>
 
         <div class="empty-box">
@@ -21,9 +29,10 @@ $this->title = 'Заявки';
 
             <?php foreach ($applications as $app): ?>
                 <?php
-                
+                // Получаем автомобиль из заявки
                 $car = $app->car;
-
+                
+                // Собираем все характеристики автомобиля
                 $characteristics = [];
                 if ($car) {
                     foreach ($car->carCharacteristics as $cc) {
@@ -32,19 +41,33 @@ $this->title = 'Заявки';
                         }
                     }
                 }
+                
+                // Получаем марку из характеристик
                 $marka = $characteristics['Марка'] ?? '';
-                $fullName = trim($marka . ' ' . ($car->model ?? ''));
+                
+                // Формируем полное название: Марка + Модель
+                $fullCarName = trim($marka . ' ' . ($car->model ?? ''));
                 ?>
 
-                <div class="app-card">
+                 <div class="app-card">
 
                     <div class="app-header">
-                        <?= $fullName ?: 'Автомобиль не указан' ?>
+                        <?= $fullCarName ?: 'Автомобиль не указан' ?>
                     </div>
 
-                    <div class="client-info">
-                        <b>Клиент:</b> <?= $app->fullname ?> (<?= $app->phone ?>)
-                    </div>
+                   <div class="client-info">
+
+    <b>Клиент:</b>
+
+    <?= $app->user->login ?>
+
+    (<?= $app->user->fullname ?>)
+
+    <br>
+
+    <?= $app->phone ?>
+
+</div>
 
                     <div class="app-dates">
                         <?= Yii::$app->formatter->asDate($app->start_date, 'php:d.m.Y') ?> — 

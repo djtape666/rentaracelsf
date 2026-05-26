@@ -7,13 +7,24 @@
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 
 <div class="spec-page">
 
+    <div class="spec-header">
+
+    <a href="<?= \yii\helpers\Url::to(['/admin/create-car']) ?>"
+       class="back-btn">
+
+        Назад
+
+    </a>
+
     <h1>Характеристики</h1>
 
+</div>
     <div class="spec-grid">
 
         
@@ -42,7 +53,7 @@ use yii\helpers\Html;
 
         <div class="spec-box">
 
-            <h2>Значение</h2>
+            <h2>Описание</h2>
 
             <?php $form = ActiveForm::begin(); ?>
 

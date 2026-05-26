@@ -79,6 +79,14 @@ class AccountController extends Controller
      */
     public function actionCreate()
     {
+
+// Проверяем, авторизован ли пользователь
+    if (Yii::$app->user->isGuest) {
+        Yii::$app->session->setFlash('error', 'Для бронирования автомобиля необходимо авторизоваться или зарегистрироваться.');
+        return $this->redirect(['/site/login']);
+    }
+
+
         $model = new Application();
 
         if ($this->request->isPost) {

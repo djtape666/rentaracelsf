@@ -19,6 +19,7 @@ $this->title = 'Регистрация';
         <?php $form = ActiveForm::begin(); ?>
 
             <?= $form->field($model, 'login') ?>
+            <?= $form->field($model, 'fullname') ?>
 
             <?= $form->field($model, 'password')->passwordInput() ?>
 
@@ -42,5 +43,8 @@ $this->title = 'Регистрация';
 </div>
 
 <style>
-
+ body {
+            background: #404040;
+            color: white;
+        }
 </style>

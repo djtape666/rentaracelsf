@@ -110,5 +110,6 @@ use yii\helpers\Url;
     body {
         background: #404040;
         color: white;
+         font-family: 'myfont', Arial, sans-serif !important;
     }
 </style>

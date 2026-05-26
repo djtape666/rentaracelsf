@@ -7,52 +7,142 @@ use yii\widgets\ActiveForm;
 /** @var app\models\Car $model */
 /** @var app\models\Category[] $categories */
 
-$this->title = 'Создать автомобиль';
 ?>
 
-<h1><?= Html::encode($this->title) ?></h1>
+<div class="create-car-page">
 
-<?php $form = ActiveForm::begin([
-    'options' => ['enctype' => 'multipart/form-data']
-]); ?>
+    <div class="create-header">
 
-<?= $form->field($model, 'color')->textInput() ?>
-<?= $form->field($model, 'price')->textInput() ?>
-<?= $form->field($model, 'engine_power')->textInput() ?>
-<?= $form->field($model, 'description')->textarea() ?>
-<?= $form->field($model, 'model')->textInput() ?>
-<?= $form->field($model, 'year')->textInput() ?>
+        <a href="<?= \yii\helpers\Url::to(['/admin/create-car']) ?>"
+           class="back-btn">
 
-<h3>Характеристики автомобиля</h3>
+            Назад
 
-<?php foreach ($categories as $category): ?>
-    <?php
-    $items = \app\models\Characteristic::find()
-        ->where(['category_id' => $category->id])
-        ->select(['value', 'id'])
-        ->indexBy('id')
-        ->column();
-    ?>
-    
-    <div class="form-group">
-        <label><?= Html::encode($category->name) ?></label>
-        <?= Html::dropDownList(
-            'characteristics[' . $category->id . ']',
-            null,
-            $items,
-            [
-                'class' => 'form-control',
-                'prompt' => 'Выберите ' . $category->name
-            ]
-        ) ?>
+        </a>
+
+        <h1>Создание автомобиля</h1>
+
     </div>
-<?php endforeach; ?>
 
-<div class="form-group">
-    <label>Изображения</label>
-    <input type="file" name="images[]" multiple class="form-control">
+    <div class="create-car-box">
+
+        <?php $form = ActiveForm::begin([
+            'options' => ['enctype' => 'multipart/form-data']
+        ]); ?>
+ <div class="characteristics-grid">
+
+            <?php foreach ($categories as $category): ?>
+
+                <?php
+                $items = \app\models\Characteristic::find()
+                    ->where(['category_id' => $category->id])
+                    ->select(['value', 'id'])
+                    ->indexBy('id')
+                    ->column();
+                ?>
+
+                <div class="form-group custom-field">
+
+                    <label>
+                        <?= Html::encode($category->name) ?>
+                    </label>
+
+                    <?= Html::dropDownList(
+                        'characteristics[' . $category->id . ']',
+                        null,
+                        $items,
+                        [
+                            'class' => 'form-control',
+                            'prompt' =>
+                                'Выберите ' . $category->name
+                        ]
+                    ) ?>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        </div>
+        <div class="form-grid">
+
+
+
+
+
+        
+            <?= $form->field($model, 'model')
+                ->textInput([
+                    'placeholder' => 'Введите модель'
+                ]) ?>
+  
+
+
+
+
+            <?= $form->field($model, 'year')
+                ->textInput([
+                    'placeholder' => 'Введите год'
+                ]) ?>
+
+            <?= $form->field($model, 'color')
+                ->textInput([
+                    'placeholder' => 'Введите цвет'
+                ]) ?>
+
+            <?= $form->field($model, 'price')
+                ->textInput([
+                    'placeholder' => 'Цена за сутки( ₽/сут)'
+                ]) ?>
+
+            <?= $form->field($model, 'engine_power')
+                ->textInput([
+                    'placeholder' => 'Мощность двигателя'
+                ]) ?>
+
+        </div>
+
+        <?= $form->field($model, 'description')
+            ->textarea([
+                'rows' => 5,
+                'placeholder' => 'Описание автомобиля'
+            ]) ?>
+
+       
+
+       
+
+        <div class="upload-block">
+
+            <label class="upload-label">
+                Изображения автомобиля
+            </label>
+
+            <input
+                type="file"
+                name="images[]"
+                multiple
+                class="form-control"
+            >
+
+        </div>
+
+        <div class="submit-block">
+
+            <?= Html::submitButton(
+                'Создать автомобиль',
+                ['class' => 'create-btn']
+            ) ?>
+
+        </div>
+
+        <?php ActiveForm::end(); ?>
+
+    </div>
+
 </div>
-
-<?= Html::submitButton('Создать авто', ['class' => 'btn btn-success']) ?>
-
-<?php ActiveForm::end(); ?>
+<style>
+    body{
+   background: #404040;
+   color: white;
+}
+</style>

@@ -33,7 +33,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <header id="header">
         <?php
         NavBar::begin([
-          'brandLabel' => '<img src="' . Yii::getAlias('@web') . '/images/logo.png" style="height:50px;">',
+          'brandLabel' => '<img src="' . Yii::getAlias('@web') . '/images/logo2.png" style="height:50px;">',
             'brandUrl' => Yii::$app->homeUrl,
             'options' => ['class' => 'navbar-expand-md custom-navbar fixed-top']
             

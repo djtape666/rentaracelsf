@@ -2,75 +2,150 @@
 use yii\helpers\Url;
 ?>
 
-<!-- HERO -->
-<div class="hero">
 
-    <div class="hero-text">
-        <div class="hero-title">
-            Сервис аренды <br>
-            спортивных автомобилей
-        </div>
+   <div class="home-page">
 
-        <a href="<?= Url::to(['/car/index']) ?>" class="btn-main">
-            АРЕНДОВАТЬ
-        </a>
-    </div>
+    <!-- HERO -->
 
-    <div>
-        <img src="<?= Yii::getAlias('@web') ?>/images/hero.png">
-    </div>
+    <section class="hero-section">
 
-</div>
+        <div class="slider">
 
-<!-- ABOUT -->
-<div class="about">
+            <!-- СЛАЙДЫ -->
 
-    <div class="about-title">О НАС</div>
+            <div class="slides">
 
-    <div class="about-text">
-        <b>Rent a Race</b> — сервис аренды спортивных автомобилей.  
-        Мы предлагаем уникальный опыт вождения, широкий выбор машин  
-        и удобную систему бронирования.
-    </div>
+                <!-- ВСТАВЬ СВОИ ФОТО -->
 
-</div>
+                <img src="<?= Yii::getAlias('@web') ?>/images/slide1.jpg"
+                     class="slide active">
 
-<!-- ПРЕВЬЮ МАШИН -->
-<div class="cars-preview">
+                <img src="<?= Yii::getAlias('@web') ?>/images/slide2.jpg"
+                     class="slide">
 
-    <div class="about-title">ПОПУЛЯРНЫЕ АВТО</div>
-
-    <div class="cars-grid">
-
-        <?php
-        $cars = \app\models\Car::find()->limit(3)->all();
-        foreach ($cars as $car):
-        ?>
-
-            <div class="car-card-home">
-
-                <?php if ($car->mainImage): ?>
-                    <img src="<?= Yii::getAlias('@web') . $car->mainImage->image_path ?>">
-                <?php endif; ?>
-
-                <div class="info">
-                    
-                    <?= $car->price ?> ₽ / день
-                </div>
+                <img src="<?= Yii::getAlias('@web') ?>/images/slide3.jpg"
+                     class="slide">
 
             </div>
 
-        <?php endforeach; ?>
+            <!-- ЗАТЕМНЕНИЕ -->
+
+            <div class="slider-overlay"></div>
+
+            <!-- ТЕКСТ ПОВЕРХ -->
+
+            <div class="hero-content">
+
+                <div class="site-title">
+                    RENT A RACE
+                </div>
+
+                <h1>
+                    Сервис аренды <br>
+                    спортивных автомобилей
+                </h1>
+
+                <a href="<?= Url::to(['/car/index']) ?>"
+                   class="btn-main">
+
+                    АРЕНДОВАТЬ
+
+                </a>
+
+            </div>
+
+        </div>
+
+    <!-- БЛОКИ ПОД СЛАЙДЕРОМ -->
+
+<section class="info-section">
+
+    <!-- О НАС -->
+
+    <div class="info-card">
+
+        <div class="info-title">
+            О НАС
+        </div>
+
+        <div class="info-text">
+
+            <b>Rent a Race</b> —
+            сервис аренды спортивных автомобилей.
+
+            Мы предлагаем широкий выбор автомобилей,
+            удобную систему бронирования
+            и незабываемые эмоции от вождения.
+
+        </div>
 
     </div>
 
+    <!-- КАК АРЕНДОВАТЬ -->
+
+    <div class="info-card">
+
+        <div class="info-title">
+            КАК ОФОРМИТЬ АРЕНДУ
+        </div>
+
+        <div class="steps">
+
+            <div class="step-item">
+                1. Выберите автомобиль в каталоге
+            </div>
+
+            <div class="step-item">
+                2. Заполните форму бронирования
+            </div>
+
+            <div class="step-item">
+                3. Дождитесь подтверждения заявки
+            </div>
+
+            <div class="step-item">
+                4. Получите автомобиль в назначенную дату
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 </div>
+
+<script>
+
+    const slides = document.querySelectorAll('.slide');
+
+    let current = 0;
+
+    setInterval(() => {
+
+        slides[current].classList.remove('active');
+
+        current++;
+
+        if (current >= slides.length) {
+            current = 0;
+        }
+
+        slides[current].classList.add('active');
+
+    }, 2500);
+
+</script>
+
 <style>
-    body {
-  background: #404040;
-  color: white;
-                }
+
+body {
+    background: #404040;
+    color: white;
+    font-family: "myfont", sans-serif;
+}
+
+
+
+
 </style>
-
-
-     

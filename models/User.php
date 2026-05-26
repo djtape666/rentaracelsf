@@ -1,10 +1,8 @@
 <?php
 
 namespace app\models;
-
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-
 use Yii;
 
 /**
@@ -12,6 +10,7 @@ use Yii;
  *
  * @property int $id
  * @property string $login
+ * @property string $fullname
  * @property string $password
  * @property string $phone
  * @property int $age
@@ -22,6 +21,7 @@ use Yii;
  * @property Application[] $applications
  */
 class User extends ActiveRecord implements IdentityInterface
+
 {
 
 
@@ -40,9 +40,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['role'], 'default', 'value' => 0],
-            [['login', 'password', 'phone', 'age', 'email',], 'required'],
+            [['login', 'fullname', 'password', 'phone', 'age', 'email', ], 'required'],
             [['age', 'role'], 'integer'],
             [['login', 'password', 'email', 'auth_key'], 'string', 'max' => 255],
+            [['fullname'], 'string', 'max' => 256],
             [['phone'], 'string', 'max' => 16],
             [['login'], 'unique'],
         ];
@@ -56,6 +57,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'login' => 'Логин',
+            'fullname' => 'Фамилия и Имя',
             'password' => 'Пароль',
             'phone' => 'Телефон',
             'age' => 'Возраст',
