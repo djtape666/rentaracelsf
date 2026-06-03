@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-8.4
--- Время создания: Май 26 2026 г., 18:13
+-- Время создания: Июн 03 2026 г., 21:27
 -- Версия сервера: 8.4.4
 -- Версия PHP: 8.3.14
 
@@ -44,8 +44,14 @@ CREATE TABLE `application` (
 --
 
 INSERT INTO `application` (`id`, `created_at`, `car_id`, `pay_type_id`, `phone`, `end_date`, `start_date`, `status_id`, `user_id`) VALUES
-(3, '2026-05-23 22:11:36', 1, 1, '11', '2026-05-15 00:00:00', '2026-05-01 00:00:00', 3, 3),
-(4, '2026-05-25 10:38:45', 11, 1, '+71234567890', '2026-05-28 00:00:00', '2026-05-26 00:00:00', 3, 4);
+(4, '2026-05-25 10:38:45', 11, 1, '+71234567890', '2026-05-28 00:00:00', '2026-05-26 00:00:00', 3, 4),
+(5, '2026-05-26 23:49:00', 5, 2, '+71234567890', '2026-05-31 00:00:00', '2026-05-30 00:00:00', 3, 4),
+(6, '2026-05-26 23:51:37', 6, 2, '+79211568360', '2026-05-31 00:00:00', '2026-05-30 00:00:00', 3, 5),
+(7, '2026-05-27 01:05:49', 1, 2, '+71234567890', '2026-05-31 00:00:00', '2026-05-30 00:00:00', 3, 5),
+(8, '2026-05-27 01:07:28', 2, 1, '+71234567890', '2026-05-31 00:00:00', '2026-05-30 00:00:00', 3, 5),
+(9, '2026-06-03 16:29:40', 7, 2, '+71234567890', '2026-06-30 16:29:00', '2026-06-26 16:29:00', 3, 5),
+(10, '2026-06-03 20:31:06', 15, 2, '+79211568360', '2026-06-28 20:31:00', '2026-06-27 20:31:00', 2, 4),
+(11, '2026-06-03 20:31:32', 15, 1, '+71234567890', '2026-06-30 20:31:00', '2026-06-29 20:31:00', 2, 4);
 
 -- --------------------------------------------------------
 
@@ -77,7 +83,7 @@ INSERT INTO `car` (`id`, `color`, `price`, `engine_power`, `description`, `model
 (6, 'Синий', 28000, 245, 'Audi A6 Allroad Quattro 45 TDI - это полноприводный премиальный универсал повышенной проходимости. Он оснащается 3,0-литровым дизельным двигателем V6 , 8-ступенчатой АКПП , адаптивной пневмоподвеской и постоянным полным приводом, сочетая динамику спорткара и практичность внедорожника', 'A6 Allroad Quattro 45 TDI', 2021, 1),
 (7, 'Металл', 30000, 760, 'Ford Mustang Shelby GT500 - это самый мощный и экстремальный серийный спорткар в истории культового семейства Ford Mustang. Автомобиль сочетает агрессивный дизайн и передовые технологии, разработанные для гоночных треков.', 'Mustang Shelby GT500', 2022, 1),
 (8, 'Жёлтый', 17000, 327, 'Chevrolet Camaro 2014 - это стильный и мощный спорткар 5-го поколения, который выделяется агрессивным дизайном, задним приводом и культовым атмосферным рыком.', 'Camaro', 2014, 1),
-(11, 'черный', 17000, 190, 'цув', 'М850i Cabriolet', 2018, 1),
+(11, 'Красный', 17000, 160, 'Mazda MX-5 Miata (также известная как Mazda Roadster в Японии) — это легендарный легкий заднеприводный родстер, дебютировавший в 1989 году. Автомобиль прославился идеальной развесовкой, превосходной управляемостью, атмосферными моторами и внесен в Книгу рекордов Гиннесса как самый продаваемый спортивный кабриолет в мире', ' MX-5 Miata', 2015, 1),
 (12, 'Жёлтый', 20000, 625, 'McLaren MP4-12C (позже переименованный в McLaren 12C) — это культовый британский суперкар, выпускавшийся с 2011 по 2014 год. Это первая серийная дорожная модель, полностью разработанная подразделением McLaren Automotive. Автомобиль выделяется карбоновым монококом и передовыми технологиями из мира Формулы-1.', 'MP4-12C', 2014, 1),
 (15, 'Серый', 25000, 480, 'Ford Mustang GT нового поколения обзавёлся характерным агрессивным обликом, новыми светодиодными фарами и приборной панелью, как у истребителей. Новый скакун предлагает самый мощный стоковый Coyote V8 за всю историю и «тормоза для дрифта».', 'Mustang GT ', 2023, 1),
 (16, 'Белый', 17000, 190, 'Toyota Celica ZZT231 F6 (2002) с пробегом \\(194\\,000\\) км — это спортивный хэтчбек седьмого поколения в комплектации SS-II с легендарным высокооборотистым двигателем 2ZZ-GE и 6-ступенчатой механической коробкой передач.', 'CELICA ZZT231', 2002, 1);
@@ -142,7 +148,11 @@ INSERT INTO `car_characteristic` (`id`, `car_id`, `characteristic_id`) VALUES
 (160, 12, 16),
 (161, 12, 2),
 (162, 12, 11),
-(163, 12, 5);
+(163, 12, 5),
+(176, 11, 17),
+(177, 11, 2),
+(178, 11, 3),
+(179, 11, 5);
 
 -- --------------------------------------------------------
 
@@ -193,7 +203,10 @@ INSERT INTO `car_image` (`id`, `car_id`, `image_path`) VALUES
 (47, 1, '/images/6a157c0be0a01.jpg'),
 (49, 12, '/images/6a158a2d7b551.jpg'),
 (50, 12, '/images/6a158a4494215.jpg'),
-(51, 12, '/images/6a158a44a4023.jpg');
+(51, 12, '/images/6a158a44a4023.jpg'),
+(53, 11, '/images/6a15da8200bbd.jpg'),
+(54, 11, '/images/6a15da90e0260.jpg'),
+(55, 11, '/images/6a15da910da79.jpg');
 
 -- --------------------------------------------------------
 
@@ -248,7 +261,35 @@ INSERT INTO `characteristic` (`id`, `category_id`, `value`) VALUES
 (13, 2, 'Электро'),
 (14, 1, 'Ford'),
 (15, 1, 'Toyota'),
-(16, 1, 'McLaren');
+(16, 1, 'McLaren'),
+(17, 1, 'Mazda');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `chat_message`
+--
+
+CREATE TABLE `chat_message` (
+  `id` int NOT NULL,
+  `application_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `message` text COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `chat_message`
+--
+
+INSERT INTO `chat_message` (`id`, `application_id`, `user_id`, `message`, `created_at`, `is_read`) VALUES
+(1, 10, 4, 'lf ', '2026-06-03 20:38:55', 1),
+(2, 10, 4, 'ьььь', '2026-06-03 20:40:05', 1),
+(3, 10, 2, 'пппп', '2026-06-03 21:00:08', 1),
+(4, 10, 4, 'здравствуйте', '2026-06-03 21:02:54', 1),
+(5, 10, 4, 'помогите пожалуйста я врезался', '2026-06-03 21:08:57', 1),
+(6, 10, 4, 'почему вы не отвечаете', '2026-06-03 21:15:11', 1);
 
 -- --------------------------------------------------------
 
@@ -259,15 +300,21 @@ INSERT INTO `characteristic` (`id`, `category_id`, `value`) VALUES
 CREATE TABLE `feedback` (
   `application_id` int NOT NULL,
   `comment` text COLLATE utf8mb4_general_ci,
-  `rating` int NOT NULL
+  `car_rating` int NOT NULL,
+  `booking_rating` int NOT NULL,
+  `service_rating` int NOT NULL,
+  `expectation_rating` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Дамп данных таблицы `feedback`
 --
 
-INSERT INTO `feedback` (`application_id`, `comment`, `rating`) VALUES
-(3, NULL, 1);
+INSERT INTO `feedback` (`application_id`, `comment`, `car_rating`, `booking_rating`, `service_rating`, `expectation_rating`) VALUES
+(4, 'ttyt', 2, 3, 3, 3),
+(6, 'yyyy', 5, 5, 5, 5),
+(7, '4к', 5, 5, 5, 5),
+(8, '11111', 4, 5, 5, 3);
 
 -- --------------------------------------------------------
 
@@ -335,7 +382,9 @@ INSERT INTO `user` (`id`, `login`, `fullname`, `password`, `phone`, `age`, `emai
 (1, 'mamalama', '', '$2y$13$WUoSBhdtQixZF6qh51FFTO/xNMyZuDwQx6DWx9oxccDVkOT3U2gnq', '8(996)945-04-16', 23, 'hotbeeeer@gmail.com', 0, '8ekKDZn3J1KLb-freJhD9zOowD51XAaP'),
 (2, 'admin', '', '$2y$13$Cp0dr4mKrPwz2mXjI0CAtuFKQKDJCFEvtDKI1Btxb21ypsvZYyp6y', '+7(123)456-78-90', 23, 'hotbeeeer@gmail.com', 1, 'JL36oNNBOesQW7mEZ8RJ5JtLuwXnRbmK'),
 (3, 'kokoko', '', '$2y$13$jLNo7gK1A44VwYD9YrfeV.T0uzoAzsStvVPAkxNRMHghqOJhULtNW', '+7(899)694-50-4', 23, 'hotbeeeer@gmail.com', 0, 'S_3FR6mcDYPmUXO7Z_4RvkAGWfC4sHiG'),
-(4, 'user', 'Максов Макс', '$2y$13$2xf6NkX6cvCW2MrQJdEbneYuY5Mh21xbrJFwkYhMwxTNQiWYDzwMW', '+7(123)456-78-90', 26, 'gudini@mail.com', 0, 'nVbLY4qp4U1F_9kJKzRLH7kG1yuYzE5R');
+(4, 'user', 'Максов Макс', '$2y$13$2xf6NkX6cvCW2MrQJdEbneYuY5Mh21xbrJFwkYhMwxTNQiWYDzwMW', '+7(123)456-78-90', 26, 'gudini@mail.com', 0, 'nVbLY4qp4U1F_9kJKzRLH7kG1yuYzE5R'),
+(5, 'user2', 'Баранов Кирилл', '$2y$13$cZv5Aece1ju//E0bZTC/2OF.k7zYFs9yEUBbtd30DrcLDy473MGiC', '8(996)945-04-16', 26, 'sorokdva@mail.com', 0, 'qGZOBN1QW8T0PxWBHptgqHFYKrp4PtB-'),
+(6, 'user3', 'Аrina Mishak', '$2y$13$fFy3dB9MLl0/VrudQ0fbb.dv/Uz38pDrYKd7zJshdfAXYJPYcXRVC', '8(996)945-04-16', 23, 'hotbeeeer@gmail.com', 0, 'sp5Rulm5fuqeCI-bzOwoqEsrZZ6bs4Rc');
 
 --
 -- Индексы сохранённых таблиц
@@ -386,6 +435,14 @@ ALTER TABLE `characteristic`
   ADD KEY `category_id` (`category_id`);
 
 --
+-- Индексы таблицы `chat_message`
+--
+ALTER TABLE `chat_message`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `application_id` (`application_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Индексы таблицы `feedback`
 --
 ALTER TABLE `feedback`
@@ -418,25 +475,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `application`
 --
 ALTER TABLE `application`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `car`
 --
 ALTER TABLE `car`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT для таблицы `car_characteristic`
 --
 ALTER TABLE `car_characteristic`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
 
 --
 -- AUTO_INCREMENT для таблицы `car_image`
 --
 ALTER TABLE `car_image`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT для таблицы `category`
@@ -448,13 +505,19 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT для таблицы `characteristic`
 --
 ALTER TABLE `characteristic`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT для таблицы `chat_message`
+--
+ALTER TABLE `chat_message`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `application_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `application_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `pay_type`
@@ -472,7 +535,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -505,6 +568,13 @@ ALTER TABLE `car_image`
 --
 ALTER TABLE `characteristic`
   ADD CONSTRAINT `characteristic_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `chat_message`
+--
+ALTER TABLE `chat_message`
+  ADD CONSTRAINT `chat_message_ibfk_1` FOREIGN KEY (`application_id`) REFERENCES `application` (`id`),
+  ADD CONSTRAINT `chat_message_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `feedback`
