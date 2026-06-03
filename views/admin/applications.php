@@ -70,8 +70,8 @@ $marka = $characteristics['Марка'] ?? '';
 </div>
 
                     <div class="app-dates">
-                        <?= Yii::$app->formatter->asDate($app->start_date, 'php:d.m.Y') ?> — 
-                        <?= Yii::$app->formatter->asDate($app->end_date, 'php:d.m.Y') ?>
+                        <?= Yii::$app->formatter->asDate($app->start_date, 'php:d.m.Y H:i') ?> — 
+                        <?= Yii::$app->formatter->asDate($app->end_date, 'php:d.m.Y H:i') ?>
                     </div>
 
                     <div class="app-status status-<?= $app->status->alias ?>">
@@ -91,21 +91,44 @@ $marka = $characteristics['Марка'] ?? '';
                             </a>
                         <?php endif; ?>
                     </div>
+<?php if ($app->status->alias == 'active'): ?>
 
+    <div class="chat-button-wrapper">
+
+        <a href="<?= Url::to([
+            '/admin/chat',
+            'id' => $app->id
+        ]) ?>" class="admin-btn">
+
+<?php
+$unreadMessages = \app\models\ChatMessage::find()
+    ->where([
+        'application_id' => $app->id,
+        'is_read' => 0
+    ])
+    ->count();
+?>
+<?php if ($unreadMessages > 0): ?>
+
+    <div class="new-chat-message">
+        Новых сообщений: <?= $unreadMessages ?>
+    </div>
+<?php endif; ?>
+            Открыть чат
+        </a>
+    </div>
+
+<?php endif; ?>
                 </div>
-
             <?php endforeach; ?>
-
         </div>
-
     <?php endif; ?>
-
 </div>
 <style>
     body {
         background: #404040;
         color: white;
     }
-
+   
    
 </style>

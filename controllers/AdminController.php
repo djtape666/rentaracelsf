@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\ChatMessage;
 use app\models\Application;
 use app\models\AdminSearch;
 use yii\web\Controller;
@@ -484,5 +485,53 @@ public function actionShowCar($id)
     }
     
     return $this->redirect(['/car/index']);
+}
+
+
+
+public function actionChat($id)
+{
+    $application = Application::findOne($id);
+
+    if (!$application) {
+        throw new \yii\web\NotFoundHttpException();
+        
+    }
+ChatMessage::updateAll(
+    ['is_read' => 1],
+    [
+        'application_id' => $id,
+        'is_read' => 0
+    ]
+);
+    $message = new ChatMessage();
+
+    if ($message->load(Yii::$app->request->post())) {
+
+        $message->application_id = $application->id;
+
+        $message->user_id = Yii::$app->user->id;
+
+        $message->created_at = date('Y-m-d H:i:s');
+
+        $message->save();
+
+        return $this->refresh();
+    }
+
+    $messages = ChatMessage::find()
+        ->where([
+            'application_id' => $application->id
+        ])
+        ->orderBy([
+            'created_at' => SORT_ASC
+        ])
+        ->all();
+
+    return $this->render('chat', [
+        'application' => $application,
+        'messages' => $messages,
+        'message' => $message,
+    ]);
 }
 }

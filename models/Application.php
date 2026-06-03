@@ -49,6 +49,14 @@ class Application extends \yii\db\ActiveRecord
             [['pay_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PayType::class, 'targetAttribute' => ['pay_type_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+
+             ['start_date', 'validateStartDate'],
+
+        ['end_date', 'compare',
+            'compareAttribute' => 'start_date',
+            'operator' => '>',
+            'message' => 'Дата окончания должна быть больше даты начала'
+        ],
             [
     ['start_date'],
     'compare',
@@ -116,7 +124,10 @@ class Application extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Status::class, ['id' => 'status_id']);
     }
-
+public function getChatMessages()
+    {
+        return $this->hasMany(ChatMessage::class, ['application_id' => 'id']);
+    }
     /**
      * Gets query for [[User]].
      *
@@ -126,5 +137,14 @@ class Application extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+public function validateStartDate($attribute)
+{
+    if (strtotime($this->$attribute) < time()) {
 
+        $this->addError(
+            $attribute,
+            'Дата и время начала аренды не могут быть меньше текущих'
+        );
+    }
+}
 }

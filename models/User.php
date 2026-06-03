@@ -76,7 +76,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(Application::class, ['user_id' => 'id']);
     }
-
+public function getChatMessages()
+    {
+        return $this->hasMany(ChatMessage::class, ['user_id' => 'id']);
+    }
 
 
     public static function  findByUsername(string $login): bool|User

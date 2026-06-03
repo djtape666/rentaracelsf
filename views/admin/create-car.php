@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 <div class="admin-create-page">
 
-    <h1>Управление каталогом</h1>
+    <h1>Панель администратора</h1>
 
     <div class="admin-buttons">
 

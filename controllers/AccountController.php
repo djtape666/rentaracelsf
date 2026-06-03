@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Application;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use app\models\ChatMessage;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -153,39 +154,87 @@ class AccountController extends Controller
     }
 
 
-    public function actionSetRating($id, $rating)
+    public function actionFeedback($id)
 {
-
-
     $application = \app\models\Application::findOne($id);
 
     if (!$application) {
         throw new \yii\web\NotFoundHttpException();
     }
 
-    // защита
+    // Только владелец заявки может оставить отзыв
     if ($application->user_id != Yii::$app->user->id) {
         throw new \yii\web\ForbiddenHttpException();
     }
 
-    // только закрытые
-    if ($application->status->alias != 'closed') {
-        return $this->redirect(['account/index']);
-    }
-
-    // уже есть отзыв?
+    // Отзыв уже существует
     if ($application->feedback) {
-        return $this->redirect(['account/index']);
+
+        Yii::$app->session->setFlash(
+            'error',
+            'Отзыв уже был оставлен.'
+        );
+
+        return $this->redirect(['/account/applications']);
     }
 
-    $feedback = new \app\models\Feedback();
-    $feedback->application_id = $application->id;
-    $feedback->rating = $rating;
+    $model = new \app\models\Feedback();
+    $model->application_id = $application->id;
 
-    if ($feedback->save()) {
-        Yii::$app->session->setFlash('success', 'Спасибо за оценку!');
+    if (
+        $model->load(Yii::$app->request->post())
+        && $model->save()
+    ) {
+
+        Yii::$app->session->setFlash(
+            'success',
+            'Спасибо за ваш отзыв!'
+        );
+
+        return $this->redirect(['/account/index']);
     }
 
-    return $this->redirect(['account/index']);
+    return $this->render('feedback', [
+        'model' => $model,
+        'application' => $application,
+    ]);
+}
+public function actionChat($id)
+{
+    $application = Application::findOne($id);
+
+    if (!$application) {
+        throw new \yii\web\NotFoundHttpException();
+    }
+
+    // Пользователь может открыть только свои заявки
+    if ($application->user_id != Yii::$app->user->id) {
+        throw new \yii\web\ForbiddenHttpException();
+    }
+
+    $message = new ChatMessage();
+
+    if ($message->load(Yii::$app->request->post())) {
+
+        $message->application_id = $application->id;
+        $message->user_id = Yii::$app->user->id;
+        $message->created_at = date('Y-m-d H:i:s');
+        $message->is_read = 0;
+
+        $message->save();
+
+        return $this->refresh();
+    }
+
+    $messages = ChatMessage::find()
+        ->where(['application_id' => $application->id])
+        ->orderBy(['created_at' => SORT_ASC])
+        ->all();
+
+    return $this->render('chat', [
+        'application' => $application,
+        'message' => $message,
+        'messages' => $messages,
+    ]);
 }
 }

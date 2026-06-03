@@ -140,7 +140,16 @@ $fullCarName = trim($marka . ' ' . $car->model);
             БРОНИРОВАНИЕ
         </div>
     </h2>
+<?php if (
+    !Yii::$app->user->isGuest &&
+    Yii::$app->user->identity->role == 1
+): ?>
 
+    <div class="guest-warning">
+        Администратор не может оформлять заявки на аренду автомобилей.
+    </div>
+
+<?php else: ?>
     <div class="booking-wrapper">
 
         <div class="booking-box">
@@ -157,9 +166,9 @@ $fullCarName = trim($marka . ' ' . $car->model);
 
             <?= $form->field($application, 'phone')->textInput() ?>
 
-            <?= $form->field($application, 'start_date')->input('date') ?>
-            <?= $form->field($application, 'end_date')->input('date') ?>
+          <?= $form->field($application, 'start_date')->input('datetime-local') ?>
 
+<?= $form->field($application, 'end_date')->input('datetime-local') ?>
             <?= $form->field($application, 'pay_type_id')->dropDownList(
                 \app\models\PayType::find()->select(['title', 'id'])->indexBy('id')->column(),
                 ['prompt' => 'Выберите тип оплаты']
@@ -170,7 +179,7 @@ $fullCarName = trim($marka . ' ' . $car->model);
             <?php \yii\widgets\ActiveForm::end(); ?>
 <?php endif; ?>
         </div>
-
+<?php endif; ?>
     </div>
     <style>
         body {

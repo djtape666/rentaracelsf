@@ -17,7 +17,11 @@ $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
 $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
-$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
+$this->registerLinkTag([
+    'rel' => 'icon',
+    'type' => 'image/png',
+    'href' => Yii::getAlias('@web') . '/images/favicon.png'
+]);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -96,7 +100,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         © 2026 rentarace.ru &nbsp; | &nbsp;
         <b>RENT A RACE</b> &nbsp; | &nbsp;
         +7 996 945 04 16 &nbsp; | &nbsp;
-        <a href="mailto:hotbeeeer@gmail.com">hotbeeeer@gmail.com</a>
+        <a href="mailto:hotbeeeer@gmail.com">reantarace@mail.com</a>
     </div>
 
 </footer>
