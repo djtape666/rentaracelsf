@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use Yii;
@@ -40,14 +41,34 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['role'], 'default', 'value' => 0],
-            [['login', 'fullname', 'password', 'phone', 'age', 'email', ], 'required'],
+            [['login', 'fullname', 'password', 'phone', 'age', 'email',], 'required'],
             [['age', 'role'], 'integer'],
             [['login', 'password', 'email', 'auth_key'], 'string', 'max' => 255],
             [['fullname'], 'string', 'max' => 256],
             [['phone'], 'string', 'max' => 16],
             [['login'], 'unique'],
+
+            [['login'], 'unique', 'message' => 'Этот логин уже занят'],
+            [['email'], 'unique', 'message' => 'Этот email уже зарегистрирован'],
+            [['login'], 'string', 'min' => 4, 'tooShort' => 'Логин должен содержать не менее 4 символов'],
+            [['password'], 'string', 'min' => 4, 'tooShort' => 'Пароль должен содержать не менее 4 символов'],
+            [['age'], 'integer', 'min' => 21, 'tooSmall' => 'Вам должно быть не менее 21 года'],
+            [['email'], 'email', 'message' => 'Введите корректный email адрес'],
+            [
+                ['phone'],
+                'match',
+                'pattern' => '/^\+7[0-9]{10}$/',
+                'message' => 'Телефон должен быть в формате +7XXXXXXXXXX (например: +79123456789)'
+            ],
+            [
+                ['fullname'],
+                'match',
+                'pattern' => '/^[А-ЯЁ][а-яё]+\s[А-ЯЁ][а-яё]+$/u',
+                'message' => 'Введите имя и фамилию с заглавной буквы через пробел (например: Иванов Иван)'
+            ],
         ];
     }
+
 
     /**
      * {@inheritdoc}
@@ -76,7 +97,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(Application::class, ['user_id' => 'id']);
     }
-public function getChatMessages()
+    public function getChatMessages()
     {
         return $this->hasMany(ChatMessage::class, ['user_id' => 'id']);
     }
@@ -87,10 +108,10 @@ public function getChatMessages()
         return static::findOne(['login' => $login]) ?? false;
     }
 
-public function validatePassword(string $password): bool
-{
-return Yii::$app->security->validatePassword($password, $this->password);
-}
+    public function validatePassword(string $password): bool
+    {
+        return Yii::$app->security->validatePassword($password, $this->password);
+    }
 
 
     public static function findIdentity($id)
@@ -133,15 +154,12 @@ return Yii::$app->security->validatePassword($password, $this->password);
     {
         return $this->getAuthKey() === $authKey;
     }
-public function getIsAdmin(): bool 
-{
-return $this->role == 1;
-}
-public function getIsClient(): bool 
-{
-return $this->role == 0;
-}
-
-
-
+    public function getIsAdmin(): bool
+    {
+        return $this->role == 1;
+    }
+    public function getIsClient(): bool
+    {
+        return $this->role == 0;
+    }
 }

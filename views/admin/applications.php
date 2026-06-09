@@ -86,10 +86,25 @@ $marka = $characteristics['Марка'] ?? '';
                         <?php endif; ?>
 
                         <?php if ($app->status->alias != 'closed' && $app->status->alias != 'cancelled'): ?>
-                            <a href="<?= Url::to(['/admin/change-status', 'id' => $app->id, 'alias' => 'closed']) ?>" class="btn-close">
+                            <a href="<?= Url::to(['/admin/change-status', 'id' => $app->id, 'alias' => 'closed']) ?>" class="btn-closeddd">
                                 Закрыть
                             </a>
                         <?php endif; ?>
+                        <?php if ($app->status->alias == 'new'): ?>
+
+    <a
+        href="<?= Url::to([
+            '/admin/change-status',
+            'id' => $app->id,
+            'alias' => 'cancelled'
+        ]) ?>"
+        class="btn-cancel"
+      
+    >
+        Отменить
+    </a>
+
+<?php endif; ?>
                     </div>
 <?php if ($app->status->alias == 'active'): ?>
 
@@ -129,6 +144,36 @@ $unreadMessages = \app\models\ChatMessage::find()
         background: #404040;
         color: white;
     }
-   
+   .btn-cancel {
+
+    flex: 1;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 12px;
+
+    background: #8b0000;
+    color: white;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    font-size: 18px;
+
+    transition: .2s;
+}
+
+.btn-cancel:hover {
+
+    background: #c62828;
+    color: white;
+
+    transform: translateY(-2px);
+}
    
 </style>

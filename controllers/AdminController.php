@@ -42,10 +42,7 @@ public function actionUpdateCar($id)
         throw new \yii\web\NotFoundHttpException();
     }
     
-    // Получаем все категории для формы
     $categories = \app\models\Category::find()->all();
-    
-    // Получаем выбранные характеристики для этого автомобиля
     $selectedCharacteristics = [];
     foreach ($model->carCharacteristics as $cc) {
         if ($cc->characteristic && $cc->characteristic->category) {
@@ -55,7 +52,7 @@ public function actionUpdateCar($id)
     
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
         
-        // ===== ОБНОВЛЕНИЕ ХАРАКТЕРИСТИК =====
+        // Обновление характеристик
         \app\models\CarCharacteristic::deleteAll(['car_id' => $model->id]);
         
         $characteristics = Yii::$app->request->post('characteristics');
@@ -70,13 +67,11 @@ public function actionUpdateCar($id)
             }
         }
         
-        // ===== ЗАГРУЗКА НОВЫХ ИЗОБРАЖЕНИЙ =====
-        // ПРАВИЛЬНЫЙ способ получить все загруженные файлы
+
         $images = \yii\web\UploadedFile::getInstancesByName('images');
         
         if (!empty($images)) {
             foreach ($images as $file) {
-                // Проверяем, что файл успешно загружен
                 if ($file && !$file->hasError) {
                     $fileName = '/images/' . uniqid() . '.' . $file->extension;
                     $filePath = Yii::getAlias('@webroot') . $fileName;
@@ -108,15 +103,12 @@ public function actionDeleteImage($id)
     $image = \app\models\CarImage::findOne($id);
     
     if ($image) {
-        // Полный путь к файлу
         $filePath = Yii::getAlias('@webroot') . $image->image_path;
-        
-        // Удаляем физический файл
+
         if (file_exists($filePath)) {
             unlink($filePath);
         }
-        
-        // Удаляем запись из БД
+
         $image->delete();
         
         Yii::$app->session->setFlash('success', 'Изображение удалено');
@@ -124,7 +116,6 @@ public function actionDeleteImage($id)
         Yii::$app->session->setFlash('error', 'Изображение не найдено');
     }
     
-    // Возвращаемся на предыдущую страницу
     return $this->redirect(Yii::$app->request->referrer);
 }
     /**
@@ -279,7 +270,7 @@ public function actionDeleteImage($id)
         // Сохраняем автомобиль
         if ($model->save()) {
             
-            // ===== СОХРАНЕНИЕ ХАРАКТЕРИСТИК =====
+           
             $characteristics = Yii::$app->request->post('characteristics');
             
             if ($characteristics && is_array($characteristics)) {
@@ -293,7 +284,7 @@ public function actionDeleteImage($id)
                 }
             }
             
-            // ===== ЗАГРУЗКА ИЗОБРАЖЕНИЙ =====
+            // Загрузка фото
             $images = \yii\web\UploadedFile::getInstancesByName('images');
             foreach ($images as $file) {
                 $fileName = '/images/' . uniqid() . '.' . $file->extension;

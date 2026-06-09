@@ -5,7 +5,7 @@ use yii\helpers\Url;
 
    <div class="home-page">
 
-    <!-- HERO -->
+  
 
     <section class="hero-section">
 
@@ -15,7 +15,7 @@ use yii\helpers\Url;
 
             <div class="slides">
 
-                <!-- ВСТАВЬ СВОИ ФОТО -->
+    
 
                 <img src="<?= Yii::getAlias('@web') ?>/images/slide1.jpg"
                      class="slide active">
@@ -28,11 +28,11 @@ use yii\helpers\Url;
 
             </div>
 
-            <!-- ЗАТЕМНЕНИЕ -->
+          
 
             <div class="slider-overlay"></div>
 
-            <!-- ТЕКСТ ПОВЕРХ -->
+            
 
             <div class="hero-content">
 
@@ -56,7 +56,6 @@ use yii\helpers\Url;
 
         </div>
 
-    <!-- БЛОКИ ПОД СЛАЙДЕРОМ -->
 
 <section class="info-section">
 

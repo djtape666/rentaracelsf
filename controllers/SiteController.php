@@ -78,8 +78,13 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
+
+    if (Yii::$app->user->identity->role == 1) {
+        return $this->redirect(['/admin/create-car']);
+    }
+
+    return $this->redirect(['/account/index']);
+}
 
         $model->password = '';
         return $this->render('login', [

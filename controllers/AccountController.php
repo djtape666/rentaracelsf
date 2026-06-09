@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Application;
+use app\models\Status;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use app\models\ChatMessage;
@@ -236,5 +237,32 @@ public function actionChat($id)
         'message' => $message,
         'messages' => $messages,
     ]);
+}
+
+
+public function actionCancelApplication($id)
+{
+    $application = Application::findOne($id);
+
+    if (!$application) {
+        throw new \yii\web\NotFoundHttpException();
+    }
+
+  
+    if ($application->user_id != Yii::$app->user->id) {
+        throw new \yii\web\ForbiddenHttpException();
+    }
+
+    if ($application->status->alias == 'new') {
+
+        $cancelledStatus = Status::findOne([
+            'alias' => 'cancelled'
+        ]);
+
+        $application->status_id = $cancelledStatus->id;
+        $application->save(false);
+    }
+
+    return $this->redirect(['/account/index']);
 }
 }

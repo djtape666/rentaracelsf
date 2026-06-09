@@ -53,6 +53,23 @@ $this->title = 'Мои заявки';
                     <div class="app-status status-<?= $app->status->alias ?>">
                         <?= $app->status->title ?>
                     </div>
+                
+
+<?php if ($app->status->alias == 'new'): ?>
+
+    <a
+        href="<?= Url::to([
+            '/account/cancel-application',
+            'id' => $app->id
+        ]) ?>"
+        class="cancel-btn"
+       
+        data-method="post"
+    >
+        Отменить заявку
+    </a>
+
+<?php endif; ?>
 <?php if ($app->status->alias == 'active'): ?>
 
     <a
@@ -106,35 +123,40 @@ $this->title = 'Мои заявки';
 
 </div>
 <style>
-
-    body{
+ body{
 background: #404040;
 color: white;
 }
-.chat-btn {
+.cancel-btn {
+
     display: block;
 
     margin-top: 15px;
+text-align: center;
+    width: 100%;
 
     text-align: center;
 
-    background: #ffd600;
-
-    color: black;
-
     text-decoration: none;
 
-    padding: 12px;
+    background: #555;
 
-    border-radius: 12px;
+    color: white;
+
+    padding: 14px;
+
+    border-radius: 14px;
 
     font-weight: bold;
 
-    transition: .3s;
+    transition: 0.3s;
 }
 
-.chat-btn.review-btn:hover {
-    background: #ffe44d;
+.cancel-btn:hover {
+
+    background: #f44336;
+
+    color: white;
 
     transform: translateY(-2px);
 }
