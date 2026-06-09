@@ -1579,7 +1579,7 @@ body {
 
 /* Информация о клиенте */
 .client-info {
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom: 10px;
   color: #ddd;
 }
@@ -1603,15 +1603,16 @@ body {
   display: inline-block;
   padding: 5px 12px;
   border-radius: 20px;
-  font-size: 14px;
+  
   font-weight: bold;
   margin-bottom: 15px;
 }
 
 /* Цвета статусов */
 .status-new {
-  background: #c2bf00;
-  color: white;
+    background: #faa200;
+    text-align: center;
+    color: #1f1f1f;
 }
 
 .status-now,
@@ -1648,19 +1649,17 @@ body {
 .btn-confirm {
   flex: 1;
   display: inline-block;
+  font-size: 18px;
   padding: 8px 12px;
   background: #ffd600;
   color: black;
-  border-radius: 6px;
+  border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
   text-align: center;
   transition: 0.2s;
 }
-.action-buttons {
-   
-    font-size: 13px;
-  }
+
 .btn-confirm:hover {
   background: #ffed4a;
   transform: translateY(-2px);
@@ -1668,10 +1667,10 @@ body {
 }
 
 /* Кнопка закрытия */
-.btn-close {
+.btn-closeddd {
  flex: 1;
   display: inline-block;
-  padding: 10px 12px;
+  padding: 8px 12px;
   background: #555;
   color: white;
   border-radius: 8px;
@@ -1680,9 +1679,10 @@ body {
   text-align: center;
   transition: 0.2s;
   cursor: pointer;
+  font-size: 18px;
 }
 
-.btn-close:hover {
+.btn-closeddd:hover {
   background: #f44336;
   transform: translateY(-2px);
   color: white;
@@ -1720,11 +1720,11 @@ body {
 }
  .new-chat-message {
 
-    margin-top: 15px;
+
 
     margin-bottom: 12px;
 
-    background: #ff4444;
+    background: #009b1580;
 
     color: white;
 
@@ -1739,7 +1739,33 @@ body {
 .chat-button-wrapper {
     margin-top: 20px;
 }
+.chat-btn {
+    display: block;
 
+    margin-top: 15px;
+
+    text-align: center;
+
+    background: #ffd600;
+
+    color: black;
+
+    text-decoration: none;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    font-weight: bold;
+
+    transition: .3s;
+}
+
+.chat-btn.review-btn:hover {
+    background: #ffe44d;
+
+    transform: translateY(-2px);
+}
 .admin-btn {
     display: block;
 
@@ -2061,7 +2087,7 @@ color: white;
 
 /* даты */
 .app-dates {
-    font-size: 14px;
+    font-size: 15px;
     opacity: 0.8;
     margin-bottom: 10px;
 }
@@ -2071,13 +2097,16 @@ color: white;
     display: inline-block;
     padding: 5px 10px;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 18px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 /* цвета статусов */
 .status-new {
-    background: #687300;
+    background: #faa200;
+    text-align: center;
+    color: #1f1f1f;
 }
 
 .status-now {
@@ -2170,7 +2199,7 @@ color: white;
     border-radius: 12px;
 
     font-weight: bold;
-
+font-size: 18px;
     transition: .3s;
 }
 
@@ -2181,8 +2210,8 @@ color: white;
 }
 
 .review-success {
-    margin-top: 25px;
-
+    margin-top: 20px;
+font-size: 18px;
     background: #2f2f2f;
 
     text-align: center;
